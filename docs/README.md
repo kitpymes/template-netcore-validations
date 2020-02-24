@@ -2,7 +2,7 @@
 
 **Validaciones para multiples proveedores**
 
-[![Build Status](https://github.com/kitpymes/template-netcore-validations/workflows/Logger/badge.svg)](https://github.com/kitpymes/template-netcore-validations/actions)
+[![Build Status](https://github.com/kitpymes/template-netcore-validations/workflows/Validations/badge.svg)](https://github.com/kitpymes/template-netcore-validations/actions)
 [![NuGet Status](https://img.shields.io/nuget/v/Kitpymes.Core.Validations)](https://www.nuget.org/packages/Kitpymes.Core.Validations/)
 [![License](https://img.shields.io/github/license/kitpymes/template-netcore-validations)](https://github.com/kitpymes/template-netcore-validations/blob/master/docs/LICENSE.txt)
 [![Size Repo](https://img.shields.io/github/repo-size/kitpymes/template-netcore-validations)](https://github.com/kitpymes/template-netcore-validations/)
