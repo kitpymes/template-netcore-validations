@@ -1,12 +1,12 @@
-﻿# <img src="https://github.com/kitpymes/template-netcore-logger/raw/master/docs/images/logo.png" height="30px"> Logger
+﻿# <img src="https://github.com/kitpymes/template-netcore-logger/raw/master/docs/images/logo.png" height="30px"> Validations
 
-**Logeo de errores para multiples proveedores**
+**Validaciones para multiples proveedores**
 
-[![Build Status](https://github.com/kitpymes/template-netcore-logger/workflows/Logger/badge.svg)](https://github.com/kitpymes/template-netcore-logger/actions)
-[![NuGet Status](https://img.shields.io/nuget/v/Kitpymes.Core.Logger)](https://www.nuget.org/packages/Kitpymes.Core.Logger/)
-[![License](https://img.shields.io/github/license/kitpymes/template-netcore-logger)](https://github.com/kitpymes/template-netcore-logger/blob/master/docs/LICENSE.txt)
-[![Size Repo](https://img.shields.io/github/repo-size/kitpymes/template-netcore-logger)](https://github.com/kitpymes/template-netcore-logger/)
-[![Last Commit](https://img.shields.io/github/last-commit/kitpymes/template-netcore-logger)](https://github.com/kitpymes/template-netcore-logger/)
+[![Build Status](https://github.com/kitpymes/template-netcore-validations/workflows/Logger/badge.svg)](https://github.com/kitpymes/template-netcore-validations/actions)
+[![NuGet Status](https://img.shields.io/nuget/v/Kitpymes.Core.Validations)](https://www.nuget.org/packages/Kitpymes.Core.Validations/)
+[![License](https://img.shields.io/github/license/kitpymes/template-netcore-validations)](https://github.com/kitpymes/template-netcore-validations/blob/master/docs/LICENSE.txt)
+[![Size Repo](https://img.shields.io/github/repo-size/kitpymes/template-netcore-validations)](https://github.com/kitpymes/template-netcore-validations/)
+[![Last Commit](https://img.shields.io/github/last-commit/kitpymes/template-netcore-validations)](https://github.com/kitpymes/template-netcore-validations/)
 
 ## 📋 Requerimientos 
 

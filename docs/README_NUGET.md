@@ -1,6 +1,6 @@
-﻿**Logeo de errores para múltiples proveedores**
+﻿**Validaciones para múltiples proveedores**
 
-[![Build Status](https://github.com/kitpymes/template-netcore-logger/workflows/Logger/badge.svg)](https://github.com/kitpymes/template-netcore-logger/actions) [![NuGet Status](https://img.shields.io/nuget/v/Kitpymes.Core.Logger)](https://www.nuget.org/packages/Kitpymes.Core.Logger/) [![License](https://img.shields.io/github/license/kitpymes/template-netcore-logger)](https://github.com/kitpymes/template-netcore-logger/blob/master/docs/LICENSE.txt) [![Size Repo](https://img.shields.io/github/repo-size/kitpymes/template-netcore-logger)](https://github.com/kitpymes/template-netcore-logger/) [![Last Commit](https://img.shields.io/github/last-commit/kitpymes/template-netcore-logger)](https://github.com/kitpymes/template-netcore-logger/)
+[![Build Status](https://github.com/kitpymes/template-netcore-validations/workflows/Logger/badge.svg)](https://github.com/kitpymes/template-netcore-validations/actions) [![NuGet Status](https://img.shields.io/nuget/v/Kitpymes.Core.Validations)](https://www.nuget.org/packages/Kitpymes.Core.Validations/) [![License](https://img.shields.io/github/license/kitpymes/template-netcore-validations)](https://github.com/kitpymes/template-netcore-validations/blob/master/docs/LICENSE.txt) [![Size Repo](https://img.shields.io/github/repo-size/kitpymes/template-netcore-validations)](https://github.com/kitpymes/template-netcore-validations/) [![Last Commit](https://img.shields.io/github/last-commit/kitpymes/template-netcore-validations)](https://github.com/kitpymes/template-netcore-validations/)
 
 ## 📋 Requerimientos 
 
@@ -30,7 +30,7 @@
 
 ## 📄 Licencia 
 
-* Este proyecto está bajo la Licencia [LICENSE](https://raw.githubusercontent.com/kitpymes/template-netcore-logger/master/docs/LICENSE.txt)
+* Este proyecto está bajo la Licencia [LICENSE](https://raw.githubusercontent.com/kitpymes/template-netcore-validations/master/docs/LICENSE.txt)
 
 
 ## 🎁 Gratitud 
