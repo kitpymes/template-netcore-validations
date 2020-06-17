@@ -1,6 +1,7 @@
-﻿**Validaciones para múltiples proveedores**
+﻿**Validaciones para multiples proveedores**
 
-[![Build Status](https://github.com/kitpymes/template-netcore-validations/workflows/Logger/badge.svg)](https://github.com/kitpymes/template-netcore-validations/actions) [![NuGet Status](https://img.shields.io/nuget/v/Kitpymes.Core.Validations)](https://www.nuget.org/packages/Kitpymes.Core.Validations/) [![License](https://img.shields.io/github/license/kitpymes/template-netcore-validations)](https://github.com/kitpymes/template-netcore-validations/blob/master/docs/LICENSE.txt) [![Size Repo](https://img.shields.io/github/repo-size/kitpymes/template-netcore-validations)](https://github.com/kitpymes/template-netcore-validations/) [![Last Commit](https://img.shields.io/github/last-commit/kitpymes/template-netcore-validations)](https://github.com/kitpymes/template-netcore-validations/)
+[![Build Status](https://github.com/kitpymes/template-netcore-validations/workflows/Validations/badge.svg)](https://github.com/kitpymes/template-netcore-validations/actions)[![NuGet Status](https://img.shields.io/nuget/v/Kitpymes.Core.Validations)](https://www.nuget.org/packages/Kitpymes.Core.Validations/)[![NuGet Download](https://img.shields.io/nuget/dt/Kitpymes.Core.Validations)](https://www.nuget.org/stats/packages/Kitpymes.Core.Validations?groupby=Version)[![License](https://img.shields.io/github/license/kitpymes/template-netcore-validations)](https://github.com/kitpymes/template-netcore-validations/blob/master/docs/LICENSE.txt)[![Size Repo](https://img.shields.io/github/repo-size/kitpymes/template-netcore-validations)](https://github.com/kitpymes/template-netcore-validations/)[![Last Commit](https://img.shields.io/github/last-commit/kitpymes/template-netcore-validations)](https://github.com/kitpymes/template-netcore-validations/)
+
 
 ## 📋 Requerimientos 
 
@@ -12,6 +13,25 @@
 
 * C# >= 8.0
 
+* Conocimientos sobre Inyección de Dependencias
+
+
+## 🔧 Instalación 
+
+_Se puede instalar usando el administrador de paquetes Nuget o CLI dotnet._
+
+_Nuget_
+
+```
+Install-Package Kitpymes.Core.Validations
+```
+
+_CLI dotnet_
+
+```
+dotnet add package Kitpymes.Core.Validations
+```
+
 ## 🛠️ Construido con 
 
 * [NET Core](https://dotnet.microsoft.com/download) - Framework de trabajo
@@ -20,12 +40,12 @@
 * [MSTest](https://docs.microsoft.com/es-es/dotnet/core/testing/unit-testing-with-mstest) - Pruebas unitarias
 * [Nuget](https://www.nuget.org/) - Manejador de dependencias
 * [Visual Studio](https://visualstudio.microsoft.com/) - Entorno de programacion
-* [Serilog](https://serilog.net/) - Proveedor de logeo de errores
+* [FluentValidation](https://fluentvalidation.net/) - Proveedor de validaciones
 
 
 ## ✒️ Autores 
 
-* **Kitpymes** - *Trabajo Inicial* - [kitpymes](https://github.com/kitpymes)
+* **Sebastian Ferrari** - *Trabajo Inicial* - [kitpymes](https://kitpymes.com)
 
 
 ## 📄 Licencia 

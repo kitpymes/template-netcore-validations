@@ -9,4 +9,9 @@
     <PackageReference Include="coverlet.collector" Version="1.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Kitpymes.Core.Validations.Abstractions\Kitpymes.Core.Validations.Abstractions.csproj" />
+    <ProjectReference Include="..\Kitpymes.Core.Validations\Kitpymes.Core.Validations.csproj" />
+  </ItemGroup>
+
 </Project>

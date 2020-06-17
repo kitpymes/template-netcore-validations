@@ -8,20 +8,20 @@
         <Version>1.0.0</Version>
         <ApplicationIcon>$(SolutionDir)docs\images\logo.ico</ApplicationIcon>
         <PackageId>$(AssemblyName)</PackageId>
-        <Authors>Kitpymes, Sebastian R Ferrari</Authors>
+        <Authors>Kitpymes, Sebastian Ferrari</Authors>
         <Owners>Kitpymes</Owners>
-        <Title>Logger</Title>
+        <Title>Validations</Title>
         <Copyright>Copyright © $([System.DateTime]::Now.Year) by Kitpymes and Contributors. All rights reserved.</Copyright>
-        <Description>Logeo de errores para multi proveedores.</Description>
+        <Description>Validaciones para multi proveedores.</Description>
         <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
         <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
         <PackageLicenseType>file</PackageLicenseType>
         <PackageIcon>logo.png</PackageIcon>
-        <PackageProjectUrl>https://kitpymes.github.io/template-netcore-logger/</PackageProjectUrl>
-        <PackageReleaseNotes>https://github.com/kitpymes/template-netcore-logger/tree/master/docs/packages/notes_$(Version).txt</PackageReleaseNotes>
-        <RepositoryUrl>https://github.com/kitpymes/template-netcore-logger</RepositoryUrl>
+        <PackageProjectUrl>https://kitpymes.github.io/template-netcore-validations/</PackageProjectUrl>
+        <PackageReleaseNotes>https://github.com/kitpymes/template-netcore-validations/tree/master/docs/RELEASE_NOTES.txt</PackageReleaseNotes>
+        <RepositoryUrl>https://github.com/kitpymes/template-netcore-validations</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
-        <PackageTags>Log, Logger, Logging, Error, Logeo, Registrar, Registrador</PackageTags>
+        <PackageTags>Validations, Validaciones, Validador, FluentValidation</PackageTags>
         <PackageOutputPath>$(SolutionDir)docs\packages\$(Version)</PackageOutputPath>
       </PropertyGroup>
     

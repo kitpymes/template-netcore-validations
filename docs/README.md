@@ -1,9 +1,10 @@
-﻿# <img src="https://github.com/kitpymes/template-netcore-logger/raw/master/docs/images/logo.png" height="30px"> Validations
+﻿# <img src="https://github.com/kitpymes/template-netcore-validations/raw/master/docs/images/logo.png" height="30px"> Validations
 
 **Validaciones para multiples proveedores**
 
 [![Build Status](https://github.com/kitpymes/template-netcore-validations/workflows/Validations/badge.svg)](https://github.com/kitpymes/template-netcore-validations/actions)
 [![NuGet Status](https://img.shields.io/nuget/v/Kitpymes.Core.Validations)](https://www.nuget.org/packages/Kitpymes.Core.Validations/)
+[![NuGet Download](https://img.shields.io/nuget/dt/Kitpymes.Core.Validations)](https://www.nuget.org/stats/packages/Kitpymes.Core.Validations?groupby=Version)
 [![License](https://img.shields.io/github/license/kitpymes/template-netcore-validations)](https://github.com/kitpymes/template-netcore-validations/blob/master/docs/LICENSE.txt)
 [![Size Repo](https://img.shields.io/github/repo-size/kitpymes/template-netcore-validations)](https://github.com/kitpymes/template-netcore-validations/)
 [![Last Commit](https://img.shields.io/github/last-commit/kitpymes/template-netcore-validations)](https://github.com/kitpymes/template-netcore-validations/)
@@ -20,337 +21,327 @@
 
 * Conocimientos sobre Inyección de Dependencias
 
+## 🔧 Instalación 
+
+_Se puede instalar usando el administrador de paquetes Nuget o CLI dotnet._
+
+_Nuget_
+
+```
+Install-Package Kitpymes.Core.Validations
+```
+
+_CLI dotnet_
+
+```
+dotnet add package Kitpymes.Core.Validations
+```
+
 ## ⌨️ Código
 
 ```cs
-public interface ILoggerService
+public static class Check
 {
-    ILogger CreateLogger(string title);
+    public static (bool HasErrors, int Count) IsAny(params IEnumerable?[] values) {}
 
-    ILogger CreateLogger<TTitle>();
+    public static (bool HasErrors, int Count) IsCustom(params Func<bool>[] values) {}
+
+    public static (bool HasErrors, int Count) IsEqual(object? value, params object?[] valuesCompare) {}
+
+    public static (bool HasErrors, int Count) IsMax(long max, params object?[] values) {}
+
+    public static (bool HasErrors, int Count) IsMin(long min, params object?[] values) {}
+
+    public static (bool HasErrors, int Count) IsNullOrEmpty(params object?[] values) {}
+
+    public static (bool HasErrors, int Count) IsRange(long min, long max, params object?[] values) {}
+
+    public static (bool HasErrors, int Count) IsRegex(string regex, params string?[] values) {}
+
+    public static (bool HasErrors, int Count) IsDirectory(params string?[] values) {}
+
+    public static (bool HasErrors, int Count) IsEmail(params string?[] values) {}
+
+    public static (bool HasErrors, int Count) IsExtension(params string?[] values) {}
+
+    public static (bool HasErrors, int Count) IsFile(params string?[] values) {}
+
+    public static (bool HasErrors, int Count) IsName(params string?[] values) {}
+
+    public static (bool HasErrors, int Count) IsPassword(long min, params string?[] values) {}
+
+    public static (bool HasErrors, int Count) IsSubdomain(params string?[] values) {}
 }
 ```
 
 ```cs
-public interface ILogger
+public static class Regexp
 {
-    ILogger Trace(string message);
+    public const string ForDate = @"^((((0?[1-9]|[12]\d|3[01])[\.\-\/](0?[13578]|1[02])[\.\-\/]((1[6-9]|[2-9]\d)?\d{2}))|((0?[1-9]|[12]\d|30)[\.\-\/](0?[13456789]|1[012])[\.\-\/]((1[6-9]|[2-9]\d)?\d{2}))|((0?[1-9]|1\d|2[0-8])[\.\-\/]0?2[\.\-\/]((1[6-9]|[2-9]\d)?\d{2}))|(29[\.\-\/]0?2[\.\-\/]((1[6-9]|[2-9]\d)?(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00)|00)))|(((0[1-9]|[12]\d|3[01])(0[13578]|1[02])((1[6-9]|[2-9]\d)?\d{2}))|((0[1-9]|[12]\d|30)(0[13456789]|1[012])((1[6-9]|[2-9]\d)?\d{2}))|((0[1-9]|1\d|2[0-8])02((1[6-9]|[2-9]\d)?\d{2}))|(2902((1[6-9]|[2-9]\d)?(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00)|00)))) ?((20|21|22|23|[01]\d|\d)(([:.][0-5]\d){1,2}))?$";
 
-	ILogger Trace(string message, object data);
+    public const string ForDecimal = @"^((-?[1-9]+)|[0-9]+)(\.?|\,?)([0-9]*)$";
 
-	ILogger Debug(string message);
+    public const string ForEmail = @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$";
 
-	ILogger Debug(string message, object data);
+    public const string ForHex = "^#?([a-f0-9]{6}|[a-f0-9]{3})$";
 
-	ILogger Info(string message);
+    public const string ForInteger = "^((-?[1-9]+)|[0-9]+)$";
 
-	ILogger Info(string message, object data);
+    public const string ForLogin = "^[a-z0-9_-]{10,50}$";
 
-	ILogger Info(string eventName, string templateMessage, params object[] propertyValues);
+    public const string ForPassword = @"^.*(?=.{10,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&+=]).*$";
 
-	ILogger Error(string message);
+    public const string ForTag = @"^<([a-z1-6]+)([^<]+)*(?:>(.*)<\/\1>| *\/>)$";
 
-	ILogger Error(string message, object data);
+    public const string ForTime = @"^([01]?[0-9]|2[0-3]):[0-5][0-9]$";
 
-	ILogger Error(string eventName, string templateMessage, params object[] propertyValues);
+    public const string ForUrl = @"^((https?|ftp|file):\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$";
 
-	ILogger Error(Exception exception);
+    public const string ForHostname = @"^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$";
+
+    public const string ForName = @"^[a-zA-Z ]*$";
+
+    public const string ForSubdomain = @"^[a-zA-Z0-9]*$";
 }
 ```
 
 ```cs
-public enum LoggerLevel
+public class ValidationsException : Exception
 {
-    Trace = 0,
+    public ValidationsException(params string[] messages) {}
 
-    Debug = 1,
+    public ValidationsException(IDictionary<string, string> messages) {}
 
-    Info = 2,
+    public int? Count { get; }
 
-    Error = 3,
+    public bool Contains(string message) {}
+}
+```
+
+### Validator
+
+```cs
+public static class Validator
+{
+    public static ValidatorRule AddRule(object? value, Action<ValidatorRuleOptions> options) {}
+
+    public static ValidatorRule AddRule(Func<bool> condition, string message) {}
 }
 ```
 
 ```cs
-public enum LoggerFileInterval
+public class ValidatorRule
 {
-    Infinite = 0,
+    public bool IsValid { get; }
 
-    Year = 1,
+    public static void Add(Func<string> rule)  {}
 
-    Month = 2,
+    public ValidatorRule StopFirstError(bool stopFirstError = true) {}
 
-    Day = 3,
+    public ValidatorRule AddRule(object? value, Action<ValidatorRuleOptions> options) {}
 
-    Hour = 4,
+    public ValidatorRule AddRule(Func<bool> condition, string message) {}
 
-    Minute = 5,
+    public void Throw() {}
+
+    public async Task ThrowAsync() {}
 }
 ```
+
+```cs
+public class ValidatorRuleOptions
+{
+    public ValidatorRuleOptions IsAny(string? overrideRureFieldName = null) {}
+
+    public ValidatorRuleOptions IsAnyWithMessage(string message) {}
+
+    public ValidatorRuleOptions IsEqual(IEnumerable? valueCompare, (string fieldName, string fieldNameCompare)? fieldsName = null) {}
+
+    public ValidatorRuleOptions IsEqualWithMessage(IEnumerable? valueCompare, string message) {}
+
+    public ValidatorRuleOptions IsMax(long max, string? overrideRureFieldName = null) {}
+
+    public ValidatorRuleOptions IsMaxWithMessage(long max, string message) {}
+
+    public ValidatorRuleOptions IsMin(long min, string? overrideRureFieldName = null) {}
+
+    public ValidatorRuleOptions IsMinWithMessage(long min, string message) {}
+
+    public ValidatorRuleOptions IsNullOrEmpty(string? overrideRureFieldName = null) {}
+
+    public ValidatorRuleOptions IsNullOrEmptyWithMessage(string message) {}
+
+    public ValidatorRuleOptions IsRange(long min, long max, string? overrideRureFieldName = null) {}
+
+    public ValidatorRuleOptions IsRangeWithMessage(long min, long max, string message) {}
+
+    public ValidatorRuleOptions IsRegex(string regex, string? overrideRureFieldName = null) {}
+
+    public ValidatorRuleOptions IsRegexWithMessage(string regex, string message) {}
+
+    public ValidatorRuleOptions IsDirectory(string? overrideRureFieldName = null) {}
+
+    public ValidatorRuleOptions IsDirectoryWithMessage(string message) {}
+
+    public ValidatorRuleOptions IsEmail(string? overrideRureFieldName = null) {}
+
+    public ValidatorRuleOptions IsEmailWithMessage(string message) {}
+
+    public ValidatorRuleOptions IsExtension(string? overrideRureFieldName = null) {}
+
+    public ValidatorRuleOptions IsExtensionWithMessage(string message) {}
+
+    public ValidatorRuleOptions IsFile(string? overrideRureFieldName = null) {}
+
+    public ValidatorRuleOptions IsFileWithMessage(string message) {}
+
+    public ValidatorRuleOptions IsName(string? overrideRureFieldName = null) {}
+
+    public ValidatorRuleOptions IsNameWithMessage(string message) {}
+
+    public ValidatorRuleOptions IsPassword(long min, string? overrideRureFieldName = null) {}
+
+    public ValidatorRuleOptions IsPasswordWithMessage(long min, string message) {}
+
+    public ValidatorRuleOptions IsSubdomain(string? overrideRureFieldName = null) {}
+
+    public ValidatorRuleOptions IsSubdomainWithMessage(string message) {}
+}
+```
+
+**Ejemplo**
+
+```cs
+using Kitpymes.Core.Validations;
+using System;
+
+public class Person
+{
+    public Person(int age, string name, string email)
+    {
+        Validator
+            .AddRule(age, x => x.IsMin(17).IsMax(51).WithRuleFieldName("Edad"))
+            .AddRule(name, x => x.IsName("Nombre"))
+            .AddRule(email, x => x.IsEmailWithMessage("El correo eléctronico tiene un formato incorrecto."))
+            .Throw();
+
+        Id = Guid.NewGuid();
+        Age = age;
+        Name = name;
+        Email = email;
+    }
+
+    public Person ChangeName(string name)
+    {
+        Validator.AddRule(name, x => x.IsName("Nombre")).Throw();
+
+        Name = name;
+
+        return this;
+    }
+
+    public Guid Id { get; private set; }
+    public int Age { get; private set; }
+    public string? Name { get; private set; }
+    public string? Email { get; private set; }
+}
+```
+
+### FluentValidation
+
+**Agregamos el middlware en la clase Startup**
+
+```cs
+app.LoadValidations();
+```
+
+**Agregamos el ConfigureApiBehaviorOptions en la clase Startup**
+
+```cs
+services.AddControllers()
+    .ConfigureApiBehaviorOptions(x =>
+    {
+        x.InvalidModelStateResponseFactory = context =>
+        {
+            var messages = context.ModelState
+                .Where(e => e.Value.Errors.Any())
+                .ToDictionary
+                (
+                    key => key.Key,
+
+                    value => string.Join(", ", value.Value.Errors.Select(e => e.ErrorMessage))
+                );
+
+            throw new ValidationsException(messages);
+        };
+    });
+```
+
+**Opción 1: configuración desde el appsetings**
 
 ```js
 {
-    "LoggerSettings": {
-        "Serilog": {
-            "Console": {
-                "Enabled": null, // (bool) Default: false
-                "MinimumLevel": null, // (string) Default: "Info" | Options: Trace, Debug, Info, Error
-                "OutputTemplate": null // (string) Default: "{SourceContext}{NewLine}{Timestamp:HH:mm:ss:ff} [{Level:u3}] {Message:lj}{NewLine}"
-            },
-            "File": {
-                "Enabled": null, // (bool) Default: false
-                "FilePath": null, // (string) Default: "Logs\\.log"
-                "Interval": null, // (string) Default: "Day" | Options: Infinite, Year, Month, Day, Hour, Minute
-                "MinimumLevel": null // (string) Default: "Error" | Options: Info, Error
-            },
-            "Email": {
-                "Enabled": null, // (bool) Default: false
-                "UserName": null, // (string)
-                "Password": null, // (string)
-                "Server": null, // (string)
-                "From": null, // (string)
-                "To": null, // (string)
-                "EnableSsl": null, // (bool) Default: true
-                "Port": null, // (int) Default: 465
-                "Subject": null, // (string) Default: "Log Error"
-				"IsBodyHtml": null, // (bool) Default: false
-                "MinimumLevel": null, // (string) Default: "Error" | Options: Info, Error,
-                "OutputTemplate": null // (string) Default: "SourceContext: {SourceContext} | MachineName: {MachineName} | Process: {Process} | Thread: {Thread} => {NewLine}{Timestamp:yyyy-MM-dd HH:mm:ss.fff} [{Level:u}] {Message:lj}{NewLine}"
-            }
+    "ValidationsSettings": {
+        "FluentValidationSettings": {
+            "Enabled": true, // Default: false
+            "Assemblies": [ "Api.Models" ] // Default: null
         }
     }
 }
 ```
 
-### Para utilizarlo con inyección de dependencia
-
-**Option 1**
-
 ```cs
-services.LoadLogger(Configuration);
+services.LoadValidations(Configuration);
 ```
 
-**Option 2**
+**Opción 2: configuración manual, agregamos los assemblies en formato string**
 
 ```cs
-services.LoadLogger(loggers =>
-{
-    loggers.UseSerilog(serilog =>
-    {
-		serilog
-			.AddConsole()
-			.AddFile()
-			.AddEmail
-			(
-				userName: "admin@app.com", 
-				password: "password",
-				server: "smtp.gmail.com",
-				from: "admin@app.com",
-				to: "error@app.com"
-			);
-    });
-});
-```
-
-**Option 3**
-
-```cs
-services.LoadLogger(new SerilogSettings 
-{
-	// Custom values
-});
+services.LoadValidations(validator => validator.UseFluentValidator("Api.Models"));
 ```
 
 **Ejemplo**
 
 ```cs
-using Kitpymes.Core.Logger.Abstractions;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace Tests.Api.Controllers
+public class PersonAddDto 
 {
-    [ApiController]
-    [Route("[controller]")]
-    public class WeatherForecastController : ControllerBase
+    public int? Age { get; set; }
+    public string? Name { get; set; }
+    public string? Email { get; set; }
+}
+```
+
+```cs
+using FluentValidation;
+using Kitpymes.Core.Validations.FluentValidation;
+
+public class PersonAddDtoValidator : AbstractValidator<PersonAddDto>
+{
+    public PersonAddDtoValidator()
     {
-        private static readonly string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
-
-        //private readonly ILogger<WeatherForecastController> _logger;
-
-        //public WeatherForecastController(ILogger<WeatherForecastController> logger)
-        //{
-        //    _logger = logger;
-        //}
-
-        private ILogger Logger { get; }
-
-        public WeatherForecastController(ILoggerService logger)
-        {
-            Logger = logger.CreateLogger<WeatherForecastController>();
-        }
-
-        [HttpGet]
-        public IEnumerable<WeatherForecast> Get()
-        {
-            // Test
-            Logger
-               .Info("Get Summaries")
-               .Info("Summary 1", Summaries[0])
-               .Info("Summary 2", Summaries[1])
-               .Info("Summary 3", Summaries[2])
-               .Info("All Summaries", Summaries);
-
-            var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = rng.Next(-20, 55),
-                Summary = Summaries[rng.Next(Summaries.Length)]
-            })
-            .ToArray();
-        }
+        RuleFor(_ => _.Age).IsRange(17, 51, "Edad");
+        RuleFor(_ => _.Name).IsName("Nombre").IsMin(100);
+        RuleFor(_ => _.Email).IsEmailWithMessage("El correo eléctronico tiene un formato incorrecto.");
     }
 }
 ```
 
-### Para utilizarlo de forma estatica
+## 🔩 Resultados ( Solo en modo Development muestra el Details )
 
-**Option 1**
+**Resultado utilizando FluentValidation**
 
-```cs
-var configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
-var logger = Log.UseSerilog(configuration).CreateLogger<Program>();
-```
+![Resultado utilizando FluentValidation](images/screenshot/resultados_addperson.png)
 
-**Option 2**
+**Resultado utilizando Validator**
 
-```cs
-var logger = Log.UseSerilog(serilog => 
-{
-	serilog
-		.AddConsole()
-		.AddFile()
-		.AddEmail
-		(
-			userName: "admin@app.com", 
-			password: "password",
-			server: "smtp.gmail.com",
-			from: "admin@app.com",
-			to: "error@app.com"
-		);
-})
-.CreateLogger<Program>();
-```
-
-**Option 3**
-
-```cs
-var logger = Log.UseSerilog(new SerilogSettings 
-{
-	Console = new SerilogConsoleSettings
-    {
-        Enabled = true
-    },
-    File = new SerilogFileSettings
-    {
-        Enabled = true
-    },
-    Email = new SerilogEmailSettings
-    {
-        Enabled = false
-    }
-
-}).CreateLogger<Program>();
-```
-
-**Ejemplo**
-
-```cs
-using Kitpymes.Core.Logger;
-using Kitpymes.Core.Logger.Abstractions;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-
-namespace Tests.Api
-{
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            var logger = Log.UseSerilog(serilog =>
-            {
-                serilog
-                    .AddConsole
-                    (
-                        
-                    )
-                    .AddFile
-                    (
-                        minimumLevel: LoggerLevel.Info
-                    )
-                    .AddEmail
-                    (
-                        userName: "admin@app.com",
-                        password: "password",
-                        server: "smtp.gmail.com",
-                        from: "admin@app.com",
-                        to: "error@app.com"
-                    );
-            })
-           .CreateLogger<Program>();
-
-            try
-            {
-                logger.Info("Init Host...");
-
-                CreateHostBuilder(args).Build().Run();
-            }
-            catch (Exception ex)
-            {
-                logger.Error(ex);
-
-                throw ex;
-            }
-        }
-
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                // (OPCIONAL)
-                .ConfigureLogging(providers => providers.ClearProviders())
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
-    }
-}
-
-```
-
-## 🔩 Resultados
-
-**Resultado en la consola**
-
-![Resultado en la consola](images/screenshot/resultados_consola.png)
-
-
-**Resultado en los archivos**
-
-![Resultado en los archivos](images/screenshot/resultados_archivos.png)
+![Resultado utlizando Validator](images/screenshot/resultados_changename.png)
 
 
 ## ⚙️ Pruebas Unitarias
 
-_Cada proveedor de logeo de errores tiene su proyecto de test, se ejecutan desde el "Explorador de pruebas"_
+_Cada proyecto tiene su test que se ejecutan desde el "Explorador de pruebas"_
 
-![Tests](images/screenshot/pruebas_unitarias.png)
+![Resultado pruebas](images/screenshot/resultados_testing.png)
 
 
 ## 🛠️ Construido con 
@@ -361,12 +352,12 @@ _Cada proveedor de logeo de errores tiene su proyecto de test, se ejecutan desde
 * [MSTest](https://docs.microsoft.com/es-es/dotnet/core/testing/unit-testing-with-mstest) - Pruebas unitarias
 * [Nuget](https://www.nuget.org/) - Manejador de dependencias
 * [Visual Studio](https://visualstudio.microsoft.com/) - Entorno de programacion
-* [Serilog](https://serilog.net/) - Proveedor de logeo de errores
+* [FluentValidation](https://fluentvalidation.net/) - Proveedor de validaciones
 
 
 ## ✒️ Autores 
 
-* **Kitpymes** - *Trabajo Inicial* - [kitpymes](https://github.com/kitpymes)
+* **Sebastian Ferrari** - *Trabajo Inicial* - [kitpymes](https://kitpymes.com)
 
 
 ## 📄 Licencia 
