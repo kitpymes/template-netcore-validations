@@ -160,6 +160,15 @@ namespace Kitpymes.Core.Validations.Abstractions {
         }
         
         /// <summary>
+        ///   Busca una cadena traducida similar a One or more validation errors occurred..
+        /// </summary>
+        public static string MsgErrorsTitle {
+            get {
+                return ResourceManager.GetString("MsgErrorsTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Busca una cadena traducida similar a File path extension not found.
         /// </summary>
         public static string MsgExtension {

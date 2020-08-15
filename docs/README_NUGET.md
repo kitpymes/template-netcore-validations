@@ -1,7 +1,6 @@
 ﻿**Validaciones para multiples proveedores**
 
-[![Build Status](https://github.com/kitpymes/template-netcore-validations/workflows/Validations/badge.svg)](https://github.com/kitpymes/template-netcore-validations/actions)[![NuGet Status](https://img.shields.io/nuget/v/Kitpymes.Core.Validations)](https://www.nuget.org/packages/Kitpymes.Core.Validations/)[![NuGet Download](https://img.shields.io/nuget/dt/Kitpymes.Core.Validations)](https://www.nuget.org/stats/packages/Kitpymes.Core.Validations?groupby=Version)[![License](https://img.shields.io/github/license/kitpymes/template-netcore-validations)](https://github.com/kitpymes/template-netcore-validations/blob/master/docs/LICENSE.txt)[![Size Repo](https://img.shields.io/github/repo-size/kitpymes/template-netcore-validations)](https://github.com/kitpymes/template-netcore-validations/)[![Last Commit](https://img.shields.io/github/last-commit/kitpymes/template-netcore-validations)](https://github.com/kitpymes/template-netcore-validations/)
-
+[![Build Status](https://github.com/kitpymes/template-netcore-validations/workflows/Kitpymes.Core.Validations/badge.svg)](https://github.com/kitpymes/template-netcore-validations/actions) [![NuGet Status](https://img.shields.io/nuget/v/Kitpymes.Core.Validations)](https://www.nuget.org/packages/Kitpymes.Core.Validations/) [![NuGet Download](https://img.shields.io/nuget/dt/Kitpymes.Core.Validations)](https://www.nuget.org/stats/packages/Kitpymes.Core.Validations?groupby=Version) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/kitpymes/template-netcore-validations/blob/master/docs/LICENSE.txt) [![Size Repo](https://img.shields.io/github/repo-size/kitpymes/template-netcore-validations)](https://github.com/kitpymes/template-netcore-validations/)[![Last Commit](https://img.shields.io/github/last-commit/kitpymes/template-netcore-validations)](https://github.com/kitpymes/template-netcore-validations/)
 
 ## 📋 Requerimientos 
 
@@ -45,7 +44,7 @@ dotnet add package Kitpymes.Core.Validations
 
 ## ✒️ Autores 
 
-* **Sebastian Ferrari** - *Trabajo Inicial* - [kitpymes](https://kitpymes.com)
+* **Sebastian R Ferrari** - *Trabajo Inicial* - [kitpymes](https://kitpymes.com)
 
 
 ## 📄 Licencia 

@@ -10,8 +10,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Kitpymes.Core.Validations.Abstractions\Kitpymes.Core.Validations.Abstractions.csproj" />
-    <ProjectReference Include="..\Kitpymes.Core.Validations\Kitpymes.Core.Validations.csproj" />
+    <ProjectReference Include="$(SolutionDir)Kitpymes.Core.Validations.Abstractions\Kitpymes.Core.Validations.Abstractions.csproj" />
+    <ProjectReference Include="$(SolutionDir)Kitpymes.Core.Validations\Kitpymes.Core.Validations.csproj" />
   </ItemGroup>
 
 </Project>

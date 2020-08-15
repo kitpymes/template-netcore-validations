@@ -17,3 +17,6 @@ dotnet_diagnostic.CA1710.severity = none
 
 # CA1031: No capture tipos de excepción generales.
 dotnet_diagnostic.CA1031.severity = none
+
+# SA1124: Do not use regions
+dotnet_diagnostic.SA1124.severity = none

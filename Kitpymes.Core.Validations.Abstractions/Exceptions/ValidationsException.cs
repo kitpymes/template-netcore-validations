@@ -9,6 +9,7 @@ namespace Kitpymes.Core.Validations.Abstractions
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Runtime.Serialization;
     using System.Security.Permissions;
 
@@ -34,16 +35,14 @@ namespace Kitpymes.Core.Validations.Abstractions
         /// <param name="messages">Mensajes de errores.</param>
         public ValidationsException(params string[] messages)
             : this(string.Join(", ", messages))
-        {
-            Count = messages.Length;
-        }
+        { }
 
         /// <summary>
         /// Inicializa una nueva instancia de la clase <see cref="ValidationsException"/>.
         /// </summary>
-        /// <param name="messages">Mensajes de errores.</param>
-        public ValidationsException(IDictionary<string, string> messages)
-        : this(messages.ToSerialize()) { }
+        /// <param name="errors">Clave y sus mensajes de errores.</param>
+        public ValidationsException(IDictionary<string, string> errors)
+        => Errors = errors;
 
         /// <summary>
         /// Inicializa una nueva instancia de la clase <see cref="ValidationsException"/>.
@@ -53,22 +52,30 @@ namespace Kitpymes.Core.Validations.Abstractions
         [SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
         protected ValidationsException(SerializationInfo info, StreamingContext context)
             : base(info, context)
-        {
-            Count = info.GetInt32("Count");
-        }
+        { }
+
+        /// <summary>
+        /// Inicializa una nueva instancia de la clase <see cref="ValidationsException"/>.
+        /// </summary>
+        /// <param name="message">Mensajes de errores.</param>
+        /// <param name="innerException">Excepción interna.</param>
+        protected ValidationsException(string message, Exception innerException)
+            : base(message, innerException) { }
 
         private ValidationsException() { }
 
         private ValidationsException(string message)
             : base(message) { }
 
-        private ValidationsException(string message, Exception innerException)
-            : base(message, innerException) { }
+        /// <summary>
+        /// Obtiene los errores.
+        /// </summary>
+        public IDictionary<string, string>? Errors { get; }
 
         /// <summary>
-        /// Obtiene la cantidad de mensajes contenidos en la excepción.
+        /// Obtiene un valor que indica si existen errores.
         /// </summary>
-        public int? Count { get; }
+        public bool HasErrors => (Errors != null && Errors.Any()) || !string.IsNullOrWhiteSpace(Message);
 
         /// <summary>
         /// Verifica si el mensaje <paramref name="message"/> esta contenido en la excepción/>.
@@ -77,6 +84,6 @@ namespace Kitpymes.Core.Validations.Abstractions
         /// <returns>
         /// Si encontro o no el mensaje.
         /// </returns>
-        public bool Contains(string message) => Message.Contains(message, StringComparison.CurrentCulture);
+        public bool Contains(string message) => Message.Contains(message, StringComparison.CurrentCulture) || Errors.Any(x => x.Value == message);
     }
 }

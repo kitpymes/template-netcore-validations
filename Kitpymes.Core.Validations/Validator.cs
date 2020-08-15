@@ -8,7 +8,7 @@
 namespace Kitpymes.Core.Validations
 {
     using System;
-    using Kitpymes.Core.Validations.Abstractions;
+    using Kitpymes.Core.Shared;
 
     /*
         Configuración de las opciones comunes de los validadores Validator
@@ -45,7 +45,7 @@ namespace Kitpymes.Core.Validations
         /// <returns>ValidatorRule.</returns>
         public static ValidatorRule AddRule(Func<bool> condition, string message)
         {
-            if (Check.IsCustom(condition).HasErrors)
+            if (Shared.Util.Check.IsCustom(condition).HasErrors)
             {
                 ValidatorRule.Add(() => message);
             }

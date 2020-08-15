@@ -7,6 +7,8 @@
 
 namespace Kitpymes.Core.Validations.Abstractions
 {
+    using Kitpymes.Core.Shared;
+
     /*
         Configuración de los mensajes de error MessagesSettings
         Contiene las opciones de los mensajes de error
@@ -48,11 +50,11 @@ namespace Kitpymes.Core.Validations.Abstractions
         => InvalidFormat(fieldName);
 
         /// <summary>
-        /// Mensaje por defecto cuando el valor ingresado no contiene caracteres o objetos.
+        /// Mensaje por defecto cuando una lista es nula o no contiene valores.
         /// </summary>
         /// <param name="fieldName">Nombre del campo.</param>
         /// <returns>Mensaje de error.</returns>
-        public static string Any(string? fieldName = null)
+        public static string NullOrAny(string? fieldName = null)
         => Required(fieldName);
 
         /// <summary>
@@ -88,7 +90,7 @@ namespace Kitpymes.Core.Validations.Abstractions
         /// <param name="max">Valor máximo que puede tener.</param>
         /// <param name="fieldName">Nombre del campo.</param>
         /// <returns>Mensaje de error.</returns>
-        public static string Max(long max, string? fieldName = null)
+        public static string Greater(long max, string? fieldName = null)
         => string.IsNullOrWhiteSpace(fieldName)
             ? Resources.MsgMax.ToFormat(max) : Resources.MsgMaxFieldName.ToFormat(fieldName, max);
 
@@ -98,7 +100,7 @@ namespace Kitpymes.Core.Validations.Abstractions
         /// <param name="min">Valor mínimo que puede tener.</param>
         /// <param name="fieldName">Nombre del campo.</param>
         /// <returns>Mensaje de error.</returns>
-        public static string Min(long min, string? fieldName = null)
+        public static string Less(long min, string? fieldName = null)
         => string.IsNullOrWhiteSpace(fieldName) ? Resources.MsgMin.ToFormat(min) : Resources.MsgMinFieldName.ToFormat(fieldName, min);
 
         /// <summary>
@@ -162,7 +164,7 @@ namespace Kitpymes.Core.Validations.Abstractions
         /// <param name="value">Ruta del directorio.</param>
         /// <param name="fieldName">Nombre del campo.</param>
         /// <returns>Mensaje de error.</returns>
-        public static string Extension(string? value = null, string? fieldName = null)
+        public static string FileExtension(string? value = null, string? fieldName = null)
         {
             if (string.IsNullOrWhiteSpace(value))
             {

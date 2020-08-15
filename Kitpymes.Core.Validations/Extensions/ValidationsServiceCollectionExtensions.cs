@@ -8,6 +8,8 @@
 namespace Kitpymes.Core.Validations
 {
     using System;
+    using System.Linq;
+    using Kitpymes.Core.Shared;
     using Kitpymes.Core.Validations.Abstractions;
     using Kitpymes.Core.Validations.FluentValidation;
     using Microsoft.Extensions.Configuration;
@@ -64,6 +66,22 @@ namespace Kitpymes.Core.Validations
         {
             if (settings?.FluentValidationSettings != null)
             {
+                var mvcBuilder = services.ToService<IMvcBuilder>() ?? services.AddControllers();
+
+                mvcBuilder.ConfigureApiBehaviorOptions(x =>
+                {
+                    x.InvalidModelStateResponseFactory = context =>
+                    {
+                        var messages = context.ModelState
+                            .Where(e => e.Value.Errors.Any())
+                            .ToDictionary(
+                                key => key.Key,
+                                value => string.Join(", ", value.Value.Errors.Select(e => e.ErrorMessage)));
+
+                        throw new ValidationsException(messages);
+                    };
+                });
+
                 services.LoadFluentValidation(settings.FluentValidationSettings);
             }
 

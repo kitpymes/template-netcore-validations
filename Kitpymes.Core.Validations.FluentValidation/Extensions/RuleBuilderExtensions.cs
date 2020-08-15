@@ -33,13 +33,13 @@ namespace Kitpymes.Core.Validations.FluentValidation
         /// <param name="ruleBuilder">Regla de validación.</param>
         /// <param name="overrideFieldName">Nombre del campo.</param>
         /// <returns>IRuleBuilder.</returns>
-        public static IRuleBuilder<T, TProperty> IsAny<T, TProperty>(this IRuleBuilder<T, TProperty> ruleBuilder, string? overrideFieldName = null)
+        public static IRuleBuilder<T, TProperty> IsNullOrAny<T, TProperty>(this IRuleBuilder<T, TProperty> ruleBuilder, string? overrideFieldName = null)
             where TProperty : IEnumerable?
         => ruleBuilder.Custom((value, context) =>
         {
-            if (!(value is IEnumerable) || Check.IsAny(value).HasErrors)
+            if (!(value is IEnumerable) || Shared.Util.Check.IsNullOrAny(value).HasErrors)
             {
-                context.AddFailure(Messages.Any(overrideFieldName ?? context.DisplayName));
+                context.AddFailure(Messages.NullOrAny(overrideFieldName ?? context.DisplayName));
             }
         });
 
@@ -51,11 +51,11 @@ namespace Kitpymes.Core.Validations.FluentValidation
         /// <param name="ruleBuilder">Regla de validación.</param>
         /// <param name="message">Mensaje a mostrar.</param>
         /// <returns>IRuleBuilder.</returns>
-        public static IRuleBuilder<T, TProperty> IsAnyWithMessage<T, TProperty>(this IRuleBuilder<T, TProperty> ruleBuilder, string message)
+        public static IRuleBuilder<T, TProperty> IsNullOrAnyWithMessage<T, TProperty>(this IRuleBuilder<T, TProperty> ruleBuilder, string message)
            where TProperty : IEnumerable?
            => ruleBuilder.Custom((value, context) =>
            {
-               if (!(value is IEnumerable) || Check.IsAny(value).HasErrors)
+               if (!(value is IEnumerable) || Shared.Util.Check.IsNullOrAny(value).HasErrors)
                {
                    context.AddFailure(message);
                }
@@ -74,7 +74,7 @@ namespace Kitpymes.Core.Validations.FluentValidation
         public static IRuleBuilder<T, TProperty> IsEqual<T, TProperty>(this IRuleBuilder<T, TProperty> ruleBuilder, TProperty valueCompare, string? overrideFieldName = null, string? fieldNameCompare = null)
          => ruleBuilder.Custom((value, context) =>
          {
-             if (Check.IsEqual(value, valueCompare).HasErrors)
+             if (Shared.Util.Check.IsEqual(value, valueCompare).HasErrors)
              {
                  var properrtyName = overrideFieldName ?? context.DisplayName;
 
@@ -96,7 +96,7 @@ namespace Kitpymes.Core.Validations.FluentValidation
         public static IRuleBuilder<T, TProperty> IsEqualWithMessage<T, TProperty>(this IRuleBuilder<T, TProperty> ruleBuilder, TProperty valueCompare, string message)
          => ruleBuilder.Custom((value, context) =>
          {
-             if (Check.IsEqual(value, valueCompare).HasErrors)
+             if (Shared.Util.Check.IsEqual(value, valueCompare).HasErrors)
              {
                  context.AddFailure(message);
              }
@@ -111,12 +111,12 @@ namespace Kitpymes.Core.Validations.FluentValidation
         /// <param name="max">Valor máximo que puede tener el campo.</param>
         /// <param name="overrideFieldName">Nombre del campo.</param>
         /// <returns>IRuleBuilder.</returns>
-        public static IRuleBuilder<T, TProperty> IsMax<T, TProperty>(this IRuleBuilder<T, TProperty> ruleBuilder, long max, string? overrideFieldName = null)
+        public static IRuleBuilder<T, TProperty> IsGreater<T, TProperty>(this IRuleBuilder<T, TProperty> ruleBuilder, long max, string? overrideFieldName = null)
         => ruleBuilder.Custom((value, context) =>
         {
-            if (Check.IsMax(max, value).HasErrors)
+            if (Shared.Util.Check.IsGreater(max, value).HasErrors)
             {
-                context.AddFailure(Messages.Max(max, overrideFieldName ?? context.DisplayName));
+                context.AddFailure(Messages.Greater(max, overrideFieldName ?? context.DisplayName));
             }
         });
 
@@ -129,10 +129,10 @@ namespace Kitpymes.Core.Validations.FluentValidation
         /// <param name="max">Valor máximo que puede tener el campo.</param>
         /// <param name="message">Mensaje a mostrar.</param>
         /// <returns>IRuleBuilder.</returns>
-        public static IRuleBuilder<T, TProperty> IsMaxWithMessage<T, TProperty>(this IRuleBuilder<T, TProperty> ruleBuilder, long max, string message)
+        public static IRuleBuilder<T, TProperty> IsGreaterWithMessage<T, TProperty>(this IRuleBuilder<T, TProperty> ruleBuilder, long max, string message)
         => ruleBuilder.Custom((value, context) =>
         {
-            if (Check.IsMax(max, value).HasErrors)
+            if (Shared.Util.Check.IsGreater(max, value).HasErrors)
             {
                 context.AddFailure(message);
             }
@@ -147,12 +147,12 @@ namespace Kitpymes.Core.Validations.FluentValidation
         /// <param name="min">Valor mínimo que puede tener el campo.</param>
         /// <param name="overrideFieldName">Nombre del campo.</param>
         /// <returns>IRuleBuilder.</returns>
-        public static IRuleBuilder<T, TProperty> IsMin<T, TProperty>(this IRuleBuilder<T, TProperty> ruleBuilder, long min, string? overrideFieldName = null)
+        public static IRuleBuilder<T, TProperty> IsLess<T, TProperty>(this IRuleBuilder<T, TProperty> ruleBuilder, long min, string? overrideFieldName = null)
         => ruleBuilder.Custom((value, context) =>
         {
-            if (Check.IsMin(min, value).HasErrors)
+            if (Shared.Util.Check.IsLess(min, value).HasErrors)
             {
-                context.AddFailure(Messages.Min(min, overrideFieldName ?? context.DisplayName));
+                context.AddFailure(Messages.Less(min, overrideFieldName ?? context.DisplayName));
             }
         });
 
@@ -165,10 +165,10 @@ namespace Kitpymes.Core.Validations.FluentValidation
         /// <param name="min">Valor mínimo que puede tener el campo.</param>
         /// <param name="message">Mensaje a mostrar.</param>
         /// <returns>IRuleBuilder.</returns>
-        public static IRuleBuilder<T, TProperty> IsMinWithMessage<T, TProperty>(this IRuleBuilder<T, TProperty> ruleBuilder, long min, string message)
+        public static IRuleBuilder<T, TProperty> IsLessWithMessage<T, TProperty>(this IRuleBuilder<T, TProperty> ruleBuilder, long min, string message)
         => ruleBuilder.Custom((value, context) =>
         {
-            if (Check.IsMin(min, value).HasErrors)
+            if (Shared.Util.Check.IsLess(min, value).HasErrors)
             {
                 context.AddFailure(message);
             }
@@ -185,7 +185,7 @@ namespace Kitpymes.Core.Validations.FluentValidation
         public static IRuleBuilder<T, TProperty> IsNullOrEmpty<T, TProperty>(this IRuleBuilder<T, TProperty> ruleBuilder, string? overrideFieldName = null)
         => ruleBuilder.Custom((value, context) =>
         {
-            if (Check.IsNullOrEmpty(value).HasErrors)
+            if (Shared.Util.Check.IsNullOrEmpty(value).HasErrors)
             {
                 context.AddFailure(Messages.NullOrEmpty(overrideFieldName ?? context.DisplayName));
             }
@@ -202,7 +202,7 @@ namespace Kitpymes.Core.Validations.FluentValidation
         public static IRuleBuilder<T, TProperty> IsNullOrEmptyWithMessage<T, TProperty>(this IRuleBuilder<T, TProperty> ruleBuilder, string message)
         => ruleBuilder.Custom((value, context) =>
         {
-            if (Check.IsNullOrEmpty(value).HasErrors)
+            if (Shared.Util.Check.IsNullOrEmpty(value).HasErrors)
             {
                 context.AddFailure(message);
             }
@@ -221,7 +221,7 @@ namespace Kitpymes.Core.Validations.FluentValidation
         public static IRuleBuilder<T, TProperty> IsRange<T, TProperty>(this IRuleBuilder<T, TProperty> ruleBuilder, long min, long max, string? overrideFieldName = null)
          => ruleBuilder.Custom((value, context) =>
          {
-             if (Check.IsRange(min, max, value).HasErrors)
+             if (Shared.Util.Check.IsRange(min, max, value).HasErrors)
              {
                  context.AddFailure(Messages.Range(min, max, overrideFieldName ?? context.DisplayName));
              }
@@ -240,7 +240,7 @@ namespace Kitpymes.Core.Validations.FluentValidation
         public static IRuleBuilder<T, TProperty> IsRangeWithMessage<T, TProperty>(this IRuleBuilder<T, TProperty> ruleBuilder, long min, long max, string message)
          => ruleBuilder.Custom((value, context) =>
          {
-             if (Check.IsRange(min, max, value).HasErrors)
+             if (Shared.Util.Check.IsRange(min, max, value).HasErrors)
              {
                  context.AddFailure(message);
              }
@@ -257,7 +257,7 @@ namespace Kitpymes.Core.Validations.FluentValidation
         public static IRuleBuilder<T, string?> IsRegex<T>(this IRuleBuilder<T, string?> ruleBuilder, string regex, string? overrideFieldName = null)
         => ruleBuilder.Custom((value, context) =>
         {
-            if (Check.IsRegex(regex, value).HasErrors)
+            if (Shared.Util.Check.IsRegex(regex, value).HasErrors)
             {
                 context.AddFailure(Messages.Regex(overrideFieldName ?? context.DisplayName));
             }
@@ -274,7 +274,7 @@ namespace Kitpymes.Core.Validations.FluentValidation
         public static IRuleBuilder<T, string?> IsRegexWithMessage<T>(this IRuleBuilder<T, string?> ruleBuilder, string regex, string message)
         => ruleBuilder.Custom((value, context) =>
         {
-            if (Check.IsRegex(regex, value).HasErrors)
+            if (Shared.Util.Check.IsRegex(regex, value).HasErrors)
             {
                 context.AddFailure(message);
             }
@@ -290,7 +290,7 @@ namespace Kitpymes.Core.Validations.FluentValidation
         public static IRuleBuilder<T, string?> IsDirectory<T>(this IRuleBuilder<T, string?> ruleBuilder, string? overrideFieldName = null)
         => ruleBuilder.Custom((value, context) =>
         {
-            if (Check.IsDirectory(value).HasErrors)
+            if (Shared.Util.Check.IsDirectory(value).HasErrors)
             {
                 context.AddFailure(Messages.Directory(value, overrideFieldName ?? context.DisplayName));
             }
@@ -306,7 +306,7 @@ namespace Kitpymes.Core.Validations.FluentValidation
         public static IRuleBuilder<T, string?> IsDirectoryWithMessage<T>(this IRuleBuilder<T, string?> ruleBuilder, string message)
         => ruleBuilder.Custom((value, context) =>
         {
-            if (Check.IsDirectory(value).HasErrors)
+            if (Shared.Util.Check.IsDirectory(value).HasErrors)
             {
                 context.AddFailure(message);
             }
@@ -322,7 +322,7 @@ namespace Kitpymes.Core.Validations.FluentValidation
         public static IRuleBuilder<T, string?> IsEmail<T>(this IRuleBuilder<T, string?> ruleBuilder, string? overrideFieldName = null)
         => ruleBuilder.Custom((value, context) =>
         {
-            if (Check.IsEmail(value).HasErrors)
+            if (Shared.Util.Check.IsEmail(value).HasErrors)
             {
                 context.AddFailure(Messages.Email(value, overrideFieldName ?? context.DisplayName));
             }
@@ -338,7 +338,7 @@ namespace Kitpymes.Core.Validations.FluentValidation
         public static IRuleBuilder<T, string?> IsEmailWithMessage<T>(this IRuleBuilder<T, string?> ruleBuilder, string message)
         => ruleBuilder.Custom((value, context) =>
         {
-            if (Check.IsEmail(value).HasErrors)
+            if (Shared.Util.Check.IsEmail(value).HasErrors)
             {
                 context.AddFailure(message);
             }
@@ -351,12 +351,12 @@ namespace Kitpymes.Core.Validations.FluentValidation
         /// <param name="ruleBuilder">Regla de validación.</param>
         /// <param name="overrideFieldName">Nombre del campo.</param>
         /// <returns>IRuleBuilder.</returns>
-        public static IRuleBuilder<T, string?> IsExtension<T>(this IRuleBuilder<T, string?> ruleBuilder, string? overrideFieldName = null)
+        public static IRuleBuilder<T, string?> IsFileExtension<T>(this IRuleBuilder<T, string?> ruleBuilder, string? overrideFieldName = null)
         => ruleBuilder.Custom((value, context) =>
         {
-            if (Check.IsEmail(value).HasErrors)
+            if (Shared.Util.Check.IsFileExtension(value).HasErrors)
             {
-                context.AddFailure(Messages.Extension(value, overrideFieldName ?? context.DisplayName));
+                context.AddFailure(Messages.FileExtension(value, overrideFieldName ?? context.DisplayName));
             }
         });
 
@@ -367,10 +367,10 @@ namespace Kitpymes.Core.Validations.FluentValidation
         /// <param name="ruleBuilder">Regla de validación.</param>
         /// <param name="message">Mensaje a mostrar.</param>
         /// <returns>IRuleBuilder.</returns>
-        public static IRuleBuilder<T, string?> IsExtensionWithMessage<T>(this IRuleBuilder<T, string?> ruleBuilder, string message)
+        public static IRuleBuilder<T, string?> IsFileExtensionWithMessage<T>(this IRuleBuilder<T, string?> ruleBuilder, string message)
         => ruleBuilder.Custom((value, context) =>
         {
-            if (Check.IsEmail(value).HasErrors)
+            if (Shared.Util.Check.IsFileExtension(value).HasErrors)
             {
                 context.AddFailure(message);
             }
@@ -386,7 +386,7 @@ namespace Kitpymes.Core.Validations.FluentValidation
         public static IRuleBuilder<T, string?> IsFile<T>(this IRuleBuilder<T, string?> ruleBuilder, string? overrideFieldName = null)
         => ruleBuilder.Custom((value, context) =>
         {
-            if (Check.IsEmail(value).HasErrors)
+            if (Shared.Util.Check.IsFile(value).HasErrors)
             {
                 context.AddFailure(Messages.File(value, overrideFieldName ?? context.DisplayName));
             }
@@ -402,7 +402,7 @@ namespace Kitpymes.Core.Validations.FluentValidation
         public static IRuleBuilder<T, string?> IsFileWithMessage<T>(this IRuleBuilder<T, string?> ruleBuilder, string message)
         => ruleBuilder.Custom((value, context) =>
         {
-            if (Check.IsEmail(value).HasErrors)
+            if (Shared.Util.Check.IsFile(value).HasErrors)
             {
                 context.AddFailure(message);
             }
@@ -418,7 +418,7 @@ namespace Kitpymes.Core.Validations.FluentValidation
         public static IRuleBuilder<T, string?> IsName<T>(this IRuleBuilder<T, string?> ruleBuilder, string? overrideFieldName = null)
         => ruleBuilder.Custom((value, context) =>
         {
-            if (Check.IsEmail(value).HasErrors)
+            if (Shared.Util.Check.IsName(value).HasErrors)
             {
                 context.AddFailure(Messages.Name(value, overrideFieldName ?? context.DisplayName));
             }
@@ -434,7 +434,7 @@ namespace Kitpymes.Core.Validations.FluentValidation
         public static IRuleBuilder<T, string?> IsNameWithMessage<T>(this IRuleBuilder<T, string?> ruleBuilder, string message)
         => ruleBuilder.Custom((value, context) =>
         {
-            if (Check.IsEmail(value).HasErrors)
+            if (Shared.Util.Check.IsName(value).HasErrors)
             {
                 context.AddFailure(message);
             }
@@ -451,7 +451,7 @@ namespace Kitpymes.Core.Validations.FluentValidation
         public static IRuleBuilder<T, string?> IsPassword<T>(this IRuleBuilder<T, string?> ruleBuilder, long min, string? overrideFieldName = null)
         => ruleBuilder.Custom((value, context) =>
         {
-            if (Check.IsPassword(min, value).HasErrors)
+            if (Shared.Util.Check.IsPassword(min, value).HasErrors)
             {
                 context.AddFailure(Messages.Password(min, overrideFieldName ?? context.DisplayName));
             }
@@ -468,7 +468,7 @@ namespace Kitpymes.Core.Validations.FluentValidation
         public static IRuleBuilder<T, string?> IsPasswordWithMessage<T>(this IRuleBuilder<T, string?> ruleBuilder, long min, string message)
         => ruleBuilder.Custom((value, context) =>
         {
-            if (Check.IsPassword(min, value).HasErrors)
+            if (Shared.Util.Check.IsPassword(min, value).HasErrors)
             {
                 context.AddFailure(message);
             }
@@ -484,7 +484,7 @@ namespace Kitpymes.Core.Validations.FluentValidation
         public static IRuleBuilder<T, string?> IsSubdomain<T>(this IRuleBuilder<T, string?> ruleBuilder, string? overrideFieldName = null)
         => ruleBuilder.Custom((value, context) =>
         {
-            if (Check.IsEmail(value).HasErrors)
+            if (Shared.Util.Check.IsSubdomain(value).HasErrors)
             {
                 context.AddFailure(Messages.Subdomain(value, overrideFieldName ?? context.DisplayName));
             }
@@ -500,7 +500,7 @@ namespace Kitpymes.Core.Validations.FluentValidation
         public static IRuleBuilder<T, string?> IsSubdomainWithMessage<T>(this IRuleBuilder<T, string?> ruleBuilder, string message)
         => ruleBuilder.Custom((value, context) =>
         {
-            if (Check.IsEmail(value).HasErrors)
+            if (Shared.Util.Check.IsSubdomain(value).HasErrors)
             {
                 context.AddFailure(message);
             }

@@ -1,5 +1,5 @@
 # v.1.0.1
-- Se agrega la referencia a la librería Kitpymes.Core.Extensions.
+- Se agrega la referencia a la librería Kitpymes.Core.Shared 1.0.4.
 
 # v.1.0.0
 - Se genera la primera versión del paquete del proyecto de validaciones.

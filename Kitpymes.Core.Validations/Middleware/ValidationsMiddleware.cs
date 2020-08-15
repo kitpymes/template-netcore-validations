@@ -8,12 +8,11 @@
 namespace Kitpymes.Core.Validations
 {
     using System;
-    using System.IO;
+    using System.Globalization;
     using System.Net;
-    using System.Net.Mime;
     using System.Text;
-    using System.Text.RegularExpressions;
     using System.Threading.Tasks;
+    using Kitpymes.Core.Shared;
     using Kitpymes.Core.Validations.Abstractions;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
@@ -38,20 +37,20 @@ namespace Kitpymes.Core.Validations
         /// <summary>
         /// Inicializa una nueva instancia de la clase <see cref="ValidationsMiddleware"/>.
         /// </summary>
-        /// <param name="request">Una función que puede procesar una solicitud HTTP.</param>
+        /// <param name="requestDelegate">Una función que puede procesar una solicitud HTTP.</param>
         /// <param name="loggerFactory">Representa un tipo utilizado para configurar el registro de errores.</param>
-        public ValidationsMiddleware(RequestDelegate request, ILoggerFactory loggerFactory)
+        public ValidationsMiddleware(RequestDelegate requestDelegate, ILoggerFactory loggerFactory)
         {
-            Request = request;
+            RequestDelegate = requestDelegate;
 
             Logger = loggerFactory.CreateLogger<ValidationsMiddleware>();
         }
 
-        private RequestDelegate Request { get; }
+        private RequestDelegate RequestDelegate { get; }
 
         private ILogger<ValidationsMiddleware> Logger { get; }
 
-        private string? RequestData { get; set; }
+        private string? RequestBody { get; set; }
 
         /// <summary>
         /// Devuelve el mensaje configurado al cliente si ocurre una excepción.
@@ -64,103 +63,117 @@ namespace Kitpymes.Core.Validations
             {
                 if (httpContext != null)
                 {
-                    httpContext.Request.EnableBuffering();
-
-                    using var reader = new StreamReader(
-                        httpContext.Request.Body,
-                        encoding: Encoding.UTF8,
-                        detectEncodingFromByteOrderMarks: false,
-                        leaveOpen: true);
-
-                    RequestData = await reader.ReadToEndAsync().ConfigureAwait(false);
-
-                    RequestData = RequestData.ToEmptyReplace("\r\n", " ");
-
-                    httpContext.Request.Body.Position = 0;
+                    await ReadRequestBodyAsync(httpContext).ConfigureAwait(false);
                 }
 
-                await Request(httpContext).ConfigureAwait(false);
+                await RequestDelegate(httpContext).ConfigureAwait(false);
             }
             catch (Exception exception)
             {
-                var environment = (IWebHostEnvironment)httpContext.RequestServices.GetService(typeof(IWebHostEnvironment));
-
-                var details = httpContext.ToDetails(RequestData);
-
-                dynamic result = new System.Dynamic.ExpandoObject();
-
-                result.Success = false;
-
-                result.ErrorId = Guid.NewGuid().ToString();
-
-                HttpStatusCode statusCode = default;
-
-                switch (exception)
-                {
-                    case ValidationsException validationException when exception is ValidationsException:
-
-                        result.Message = validationException.Message;
-
-                        if (environment.IsDevelopment())
-                        {
-                            result.Details = details;
-                        }
-
-                        statusCode = HttpStatusCode.BadRequest;
-
-                        break;
-
-                    case UnauthorizedAccessException unauthorizedAccessException when exception is UnauthorizedAccessException:
-
-                        if (environment.IsDevelopment())
-                        {
-                            result.Message = unauthorizedAccessException.ToFullMessage();
-
-                            result.Details = details;
-                        }
-                        else
-                        {
-                            result.Message = Resources.MsgUnauthorizedAccess;
-                        }
-
-                        statusCode = HttpStatusCode.Unauthorized;
-
-                        break;
-
-                    default:
-
-                        if (environment.IsDevelopment())
-                        {
-                            result.Message = exception.ToFullMessage();
-
-                            result.Details = details;
-                        }
-                        else
-                        {
-                            Logger.LogError(exception, details);
-
-                            result.Message = Resources.MsgFriendlyUnexpectedError;
-                        }
-
-                        statusCode = HttpStatusCode.InternalServerError;
-
-                        break;
-                }
-
-                result.Status = (int)statusCode;
-
-                httpContext.Response.Clear();
-
-                httpContext.Response.StatusCode = result.Status;
-
-                httpContext.Response.ContentType = MediaTypeNames.Application.Json;
-
-                httpContext.Response.Headers.Add(nameof(Exception), exception.GetType().Name);
-
-                var json = JsonConvert.SerializeObject(result as object);
-
-                await httpContext.Response.WriteAsync(json).ConfigureAwait(false);
+                await HandleExceptionAsync(httpContext, exception).ConfigureAwait(false);
             }
+        }
+
+        private async Task ReadRequestBodyAsync(HttpContext httpContext)
+        {
+            var request = httpContext.Request;
+
+            request.EnableBuffering();
+
+            var buffer = new byte[Convert.ToInt32(request.ContentLength, CultureInfo.CurrentCulture)];
+
+            await request.Body.ReadAsync(buffer, 0, buffer.Length).ConfigureAwait(false);
+
+            RequestBody = Encoding.UTF8.GetString(buffer).ToRemove("\r\n", " ");
+
+            request.Body.Position = 0;
+        }
+
+        private async Task HandleExceptionAsync(HttpContext httpContext, Exception exception)
+        {
+            var environment = httpContext.RequestServices.ToEnvironment();
+
+            var details = httpContext.ToDetails(RequestBody);
+
+            dynamic result = new System.Dynamic.ExpandoObject();
+
+            result.Success = false;
+
+            result.Title = Resources.MsgErrorsTitle;
+
+            var exceptionTypeName = exception.GetType().Name;
+
+            HttpStatusCode statusCode = default;
+
+            switch (exception)
+            {
+                case ValidationsException validationException when exception is ValidationsException:
+
+                    statusCode = result.StatusCode = HttpStatusCode.BadRequest;
+
+                    if (validationException.HasErrors)
+                    {
+                        result.Errors = validationException.Errors;
+                    }
+                    else
+                    {
+                        result.Message = validationException.Message;
+                    }
+
+                    if (environment.IsDevelopment())
+                    {
+                        result.Exception = exceptionTypeName;
+
+                        result.Details = details;
+                    }
+
+                    break;
+
+                case UnauthorizedAccessException unauthorizedAccessException when exception is UnauthorizedAccessException:
+
+                    statusCode = result.StatusCode = HttpStatusCode.Unauthorized;
+
+                    if (environment.IsDevelopment())
+                    {
+                        result.Message = unauthorizedAccessException.ToFullMessage();
+
+                        result.Exception = exceptionTypeName;
+
+                        result.Details = details;
+                    }
+                    else
+                    {
+                        result.Message = Resources.MsgUnauthorizedAccess;
+                    }
+
+                    break;
+
+                default:
+
+                    statusCode = result.StatusCode = HttpStatusCode.InternalServerError;
+
+                    if (environment.IsDevelopment())
+                    {
+                        result.Message = exception.ToFullMessage();
+
+                        result.Exception = exceptionTypeName;
+
+                        result.Details = details;
+                    }
+                    else
+                    {
+                        Logger.LogError(exception, details);
+
+                        result.Message = Resources.MsgFriendlyUnexpectedError;
+                    }
+
+                    break;
+            }
+
+            await httpContext.Response.ToResultAsync(
+                status: statusCode,
+                message: JsonConvert.SerializeObject(result as object),
+                headers: (nameof(Exception), new string[] { exceptionTypeName })).ConfigureAwait(false);
         }
     }
 }

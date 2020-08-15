@@ -13,7 +13,7 @@ namespace Kitpymes.Core.Validations.FluentValidation
     using System.Linq;
     using System.Reflection;
     using global::FluentValidation.AspNetCore;
-    using Kitpymes.Core.Validations.Abstractions;
+    using Kitpymes.Core.Shared;
     using Microsoft.Extensions.DependencyInjection;
 
     /*
@@ -40,7 +40,7 @@ namespace Kitpymes.Core.Validations.FluentValidation
         {
             if (settings != null && settings.Enabled.HasValue && settings.Enabled.Value && settings.Assemblies != null && settings.Assemblies.Any())
             {
-                var assemblies = settings.Assemblies.ToAssemblyThrow();
+                var assemblies = settings.Assemblies.ToAssembly();
 
                 services.LoadFluentValidation(assemblies.ToArray());
             }
