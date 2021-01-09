@@ -198,6 +198,7 @@ public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 ```js
 {
     "ValidationsSettings": {
+        "Enabled": true, // Default: false
         "FluentValidationSettings": {
             "Enabled": true, // Default: false
             "Assemblies": [ "Api.Models" ] // Default: null

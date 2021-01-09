@@ -8,9 +8,7 @@
 namespace Kitpymes.Core.Validations
 {
     using System;
-    using System.Linq;
     using Kitpymes.Core.Shared;
-    using Kitpymes.Core.Validations.Abstractions;
     using Kitpymes.Core.Validations.FluentValidation;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -33,13 +31,16 @@ namespace Kitpymes.Core.Validations
         /// Carga el servicio de validaciones.
         /// </summary>
         /// <param name="services">Colección de servicios.</param>
-        /// <param name="configuration">El appsettings con su configuración.</param>
-        /// <returns>La interface IServiceCollection.</returns>
+        /// <param name="configuration">Configuración de las validaciones.</param>
+        /// <returns>IServiceCollection.</returns>
         public static IServiceCollection LoadValidations(this IServiceCollection services, IConfiguration configuration)
         {
-            var settings = configuration?.GetSection(nameof(ValidationsSettings))?.Get<ValidationsSettings>();
+            services.ToIsNullOrEmptyThrow(nameof(services));
 
-            if (settings != null)
+            var settings = configuration?.GetSection(nameof(ValidationsSettings))?.Get<ValidationsSettings>()
+                .ToIsNullOrEmptyThrow(nameof(ValidationsSettings));
+
+            if (settings?.Enabled == true)
             {
                 services.LoadValidations(settings);
             }
@@ -51,37 +52,34 @@ namespace Kitpymes.Core.Validations
         /// Carga el servicio de validaciones.
         /// </summary>
         /// <param name="services">Colección de servicios.</param>
-        /// <param name="options">Las opciones personalizadas.</param>
-        /// <returns>La interface IServiceCollection.</returns>
+        /// <param name="options">Configuración de las validaciones.</param>
+        /// <returns>IServiceCollection.</returns>
         public static IServiceCollection LoadValidations(this IServiceCollection services, Action<ValidationsOptions> options)
          {
-            var settings = options.ToConfigureOrDefault();
+            services.ToIsNullOrEmptyThrow(nameof(services));
 
-            services.LoadValidations(settings.ValidationsSettings);
+            var settings = options.ToConfigureOrDefault().ValidationsSettings;
+
+            if (settings?.Enabled == true)
+            {
+                services.LoadValidations(settings);
+            }
 
             return services;
          }
 
-        private static IServiceCollection LoadValidations(this IServiceCollection services, ValidationsSettings settings)
+        /// <summary>
+        /// Carga el servicio de validaciones.
+        /// </summary>
+        /// <param name="services">Colección de servicios.</param>
+        /// <param name="settings">Configuración de las validaciones.</param>
+        /// <returns>IServiceCollection.</returns>
+        public static IServiceCollection LoadValidations(this IServiceCollection services, ValidationsSettings settings)
         {
-            if (settings?.FluentValidationSettings != null)
+            services.ToIsNullOrEmptyThrow(nameof(services));
+
+            if (settings?.FluentValidationSettings.Enabled == true)
             {
-                var mvcBuilder = services.ToService<IMvcBuilder>() ?? services.AddControllers();
-
-                mvcBuilder.ConfigureApiBehaviorOptions(x =>
-                {
-                    x.InvalidModelStateResponseFactory = context =>
-                    {
-                        var messages = context.ModelState
-                            .Where(e => e.Value.Errors.Any())
-                            .ToDictionary(
-                                key => key.Key,
-                                value => string.Join(", ", value.Value.Errors.Select(e => e.ErrorMessage)));
-
-                        throw new ValidationsException(messages);
-                    };
-                });
-
                 services.LoadFluentValidation(settings.FluentValidationSettings);
             }
 

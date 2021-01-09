@@ -18,6 +18,8 @@ namespace Tests.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMvc();
+
             /*** Configuración desde el Appsetings para FluentValidator. ***/
             //services.LoadValidations(Configuration);
 
@@ -27,11 +29,6 @@ namespace Tests.Api
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-
             /*** Agregamos el middlware para las validaciones. ***/
             app.LoadValidations();
 

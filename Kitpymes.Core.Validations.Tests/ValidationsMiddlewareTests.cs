@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Mime;
 using System.Threading.Tasks;
@@ -25,7 +26,8 @@ namespace Kitpymes.Core.Validations.Tests
             var key = Guid.NewGuid().ToString();
             var message = Guid.NewGuid().ToString();
 
-            var errors = new Dictionary<string, string> { { key, message } };
+            var errors = new Dictionary<string, IEnumerable<string>>();
+            errors.Add(key, new[] { message });
 
             var exception = new ValidationsException(errors);
 
@@ -51,7 +53,8 @@ namespace Kitpymes.Core.Validations.Tests
             var key = Guid.NewGuid().ToString();
             var message = Guid.NewGuid().ToString();
 
-            var errors = new Dictionary<string, string> { { key, message } };
+            var errors = new Dictionary<string, IEnumerable<string>>();
+            errors.Add(key, new [] { message });
 
             (string path, string host) details = ("/" + Guid.NewGuid().ToString(), Guid.NewGuid().ToString());
 

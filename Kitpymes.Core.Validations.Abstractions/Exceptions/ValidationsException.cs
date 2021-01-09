@@ -15,7 +15,7 @@ namespace Kitpymes.Core.Validations.Abstractions
 
     /*
         Clase de excepción ValidationsException
-        Contiene la excepción que es lanzada cuando se produce un error
+        Contiene las propiedades de la excepción
     */
 
     /// <summary>
@@ -23,7 +23,7 @@ namespace Kitpymes.Core.Validations.Abstractions
     /// Contiene la excepción que es lanzada cuando se produce un error.
     /// </summary>
     /// <remarks>
-    /// <para>En esta clase se pueden agregar todas las propiedades que queremos que devuelva la excepción al frontend.</para>
+    /// <para>En esta clase se pueden agregar todas las propiedades que queremos que devuelva la excepción.</para>
     /// </remarks>
     /// <inheritdoc/>
     [Serializable]
@@ -34,14 +34,13 @@ namespace Kitpymes.Core.Validations.Abstractions
         /// </summary>
         /// <param name="messages">Mensajes de errores.</param>
         public ValidationsException(params string[] messages)
-            : this(string.Join(", ", messages))
-        { }
+        => Messages = messages;
 
         /// <summary>
         /// Inicializa una nueva instancia de la clase <see cref="ValidationsException"/>.
         /// </summary>
-        /// <param name="errors">Clave y sus mensajes de errores.</param>
-        public ValidationsException(IDictionary<string, string> errors)
+        /// <param name="errors">Lista de errores.</param>
+        public ValidationsException(IDictionary<string, IEnumerable<string>> errors)
         => Errors = errors;
 
         /// <summary>
@@ -68,14 +67,19 @@ namespace Kitpymes.Core.Validations.Abstractions
             : base(message) { }
 
         /// <summary>
+        /// Obtiene los mensajes.
+        /// </summary>
+        public IList<string>? Messages { get; }
+
+        /// <summary>
         /// Obtiene los errores.
         /// </summary>
-        public IDictionary<string, string>? Errors { get; }
+        public IDictionary<string, IEnumerable<string>>? Errors { get; }
 
         /// <summary>
         /// Obtiene un valor que indica si existen errores.
         /// </summary>
-        public bool HasErrors => (Errors != null && Errors.Any()) || !string.IsNullOrWhiteSpace(Message);
+        public bool HasErrors => Errors?.Count > 0 || !string.IsNullOrWhiteSpace(Message);
 
         /// <summary>
         /// Verifica si el mensaje <paramref name="message"/> esta contenido en la excepción/>.
@@ -84,6 +88,16 @@ namespace Kitpymes.Core.Validations.Abstractions
         /// <returns>
         /// Si encontro o no el mensaje.
         /// </returns>
-        public bool Contains(string message) => Message.Contains(message, StringComparison.CurrentCulture) || Errors.Any(x => x.Value == message);
+        public bool Contains(string message)
+        => Messages != null && Messages.Contains(message);
+
+        /// <summary>
+        /// Verifica si el mensaje <paramref name="message"/> esta contenido en la excepción/>.
+        /// </summary>
+        /// <param name="fieldName">Nombre del campo.</param>
+        /// <param name="message">Mensaje de error.</param>
+        /// <returns>bool.</returns>
+        public bool Contains(string fieldName, string message)
+        => Errors != null && Errors[fieldName] != null && Errors[fieldName].ToList().Contains(message);
     }
 }

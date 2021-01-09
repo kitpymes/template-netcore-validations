@@ -23,21 +23,26 @@ namespace Kitpymes.Core.Validations.FluentValidation
     /// </remarks>
     public class FluentValidationSettings
     {
-        private bool enabled = false;
+        /// <summary>
+        /// Valor por defecto que indica si esta habilitado el servicio.
+        /// </summary>
+        public const bool DefaultEnabled = false;
 
+        private bool _enabled = DefaultEnabled;
         private List<string> assemblies = new List<string>();
 
         /// <summary>
-        /// Obtiene o establece si la configuración esta disponible.
+        /// Obtiene o establece un valor que indica el servicio esta habilitado.
+        /// <para><strong>Default:</strong> <see cref="DefaultEnabled"/> = false.</para>
         /// </summary>
         public bool? Enabled
         {
-            get => this.enabled;
+            get => _enabled;
             set
             {
                 if (value.HasValue)
                 {
-                    this.enabled = value.Value;
+                    _enabled = value.Value;
                 }
             }
         }

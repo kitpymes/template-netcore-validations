@@ -23,15 +23,15 @@ namespace Tests.Api.EndpointsTests
             // Arrange
             var host = await new HostBuilder()
                 .ConfigureWebHost(webHost => webHost
-                .ConfigureAppConfiguration(configHost =>
-                {
-                    configHost.SetBasePath(Directory.GetCurrentDirectory());
-                    configHost.AddJsonFile("appsettings.json", optional: true);
-                    configHost.AddEnvironmentVariables(prefix: "PREFIX_");
-                })
-                .UseTestServer()
-                .UseStartup<Startup>())
-                .StartAsync();
+                    .ConfigureAppConfiguration(configHost =>
+                    {
+                        configHost.SetBasePath(Directory.GetCurrentDirectory());
+                        configHost.AddJsonFile("appsettings.json", optional: true);
+                        configHost.AddEnvironmentVariables(prefix: "PREFIX_");
+                    })
+                    .UseTestServer()
+                    .UseStartup<Startup>())
+                    .StartAsync();
 
             var client = host.GetTestClient();
 

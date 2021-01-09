@@ -29,6 +29,7 @@ namespace Kitpymes.Core.Validations.Tests
             var exception = Assert.ThrowsException<ValidationsException>(() => result.Throw());
 
             Assert.IsNotNull(exception);
+
             Assert.IsTrue(exception.Contains(Messages.NullOrAny()));
             Assert.IsTrue(exception.Contains(Messages.NullOrAny(FIELD_NAME)));
             Assert.IsTrue(exception.Contains(MESSAGE));
@@ -343,30 +344,6 @@ namespace Kitpymes.Core.Validations.Tests
         }
 
         [TestMethod]
-        public void Password_AddRules_Passing_InvalidArguments_Returns_Errors()
-        {
-            var min = FakeTypes.ValueTypes.SimpleTypes.Int_Max;
-
-            var result = Validator
-                .AddRule(FakeTypes.ReferenceTypes.ClassTypes.String_Default, x => x.IsPassword(min))
-                .AddRule(FakeTypes.ReferenceTypes.ClassTypes.String_Empty, x => x.IsPassword(min, FIELD_NAME))
-                .AddRule(FakeTypes.ReferenceTypes.ClassTypes.String_Empty, x => x.IsPasswordWithMessage(min, MESSAGE))
-                .AddRule(FakeTypes.ReferenceTypes.ClassTypes.String_Null, x => x.IsPassword(min, CUSTOM_FIELD_NAME).WithRuleFieldName(RULE_FIELD_NAME))
-                .AddRule(FakeTypes.ReferenceTypes.ClassTypes.String_Null, x => x.IsPassword(min).WithRuleFieldName(RULE_FIELD_NAME));
-
-            Assert.IsFalse(result.IsValid);
-
-            var exception = Assert.ThrowsException<ValidationsException>(() => result.Throw());
-
-            Assert.IsNotNull(exception);
-            Assert.IsTrue(exception.Contains(Messages.Password(min)));
-            Assert.IsTrue(exception.Contains(Messages.Password(min, FIELD_NAME)));
-            Assert.IsTrue(exception.Contains(MESSAGE));
-            Assert.IsTrue(exception.Contains(Messages.Password(min, CUSTOM_FIELD_NAME)));
-            Assert.IsTrue(exception.Contains(Messages.Password(min, RULE_FIELD_NAME)));
-        }
-
-        [TestMethod]
         public void Subdomain_AddRules_Passing_InvalidArguments_Returns_Errors()
         {
             var value = FakeTypes.ReferenceTypes.ClassTypes.String_New();
@@ -473,7 +450,6 @@ namespace Kitpymes.Core.Validations.Tests
                     .IsFileExtension()
                     .IsFile()
                     .IsName()
-                    .IsPassword(min)
                     .IsSubdomain())
                 .AddRule(FakeTypes.ReferenceTypes.ClassTypes.String_Null, x => x
                     .IsDirectory()
@@ -481,7 +457,6 @@ namespace Kitpymes.Core.Validations.Tests
                     .IsFileExtension()
                     .IsFile()
                     .IsName()
-                    .IsPassword(min)
                     .IsSubdomain()
                     .WithRuleFieldName(RULE_FIELD_NAME))
                 .AddRule(FakeTypes.ReferenceTypes.ClassTypes.String_New(), x => x
@@ -490,7 +465,6 @@ namespace Kitpymes.Core.Validations.Tests
                     .IsFileExtension(FIELD_NAME)
                     .IsFile(FIELD_NAME)
                     .IsName(FIELD_NAME)
-                    .IsPassword(min, FIELD_NAME)
                     .IsSubdomain(FIELD_NAME)
                     .WithRuleFieldName(RULE_FIELD_NAME))
                 .AddRule(FakeTypes.ReferenceTypes.ClassTypes.String_Empty, x => x
@@ -499,7 +473,6 @@ namespace Kitpymes.Core.Validations.Tests
                     .IsFileExtensionWithMessage(MESSAGE)
                     .IsFileWithMessage(MESSAGE)
                     .IsNameWithMessage(MESSAGE)
-                    .IsPasswordWithMessage(min, MESSAGE)
                     .IsSubdomainWithMessage(MESSAGE));
 
             Assert.IsFalse(result.IsValid);
@@ -512,7 +485,6 @@ namespace Kitpymes.Core.Validations.Tests
             Assert.IsTrue(exception.Contains(Messages.FileExtension(FakeTypes.ReferenceTypes.ClassTypes.String_Default)));
             Assert.IsTrue(exception.Contains(Messages.File(FakeTypes.ReferenceTypes.ClassTypes.String_Default)));
             Assert.IsTrue(exception.Contains(Messages.Name(FakeTypes.ReferenceTypes.ClassTypes.String_Default)));
-            Assert.IsTrue(exception.Contains(Messages.Password(min)));
             Assert.IsTrue(exception.Contains(Messages.Subdomain(FakeTypes.ReferenceTypes.ClassTypes.String_Default)));
 
             Assert.IsTrue(exception.Contains(Messages.Directory(FakeTypes.ReferenceTypes.ClassTypes.String_Null, RULE_FIELD_NAME)));
@@ -520,7 +492,6 @@ namespace Kitpymes.Core.Validations.Tests
             Assert.IsTrue(exception.Contains(Messages.FileExtension(FakeTypes.ReferenceTypes.ClassTypes.String_Null, RULE_FIELD_NAME)));
             Assert.IsTrue(exception.Contains(Messages.File(FakeTypes.ReferenceTypes.ClassTypes.String_Null, RULE_FIELD_NAME)));
             Assert.IsTrue(exception.Contains(Messages.Name(FakeTypes.ReferenceTypes.ClassTypes.String_Null, RULE_FIELD_NAME)));
-            Assert.IsTrue(exception.Contains(Messages.Password(min, RULE_FIELD_NAME)));
             Assert.IsTrue(exception.Contains(Messages.Subdomain(FakeTypes.ReferenceTypes.ClassTypes.String_Null, RULE_FIELD_NAME)));
 
             Assert.IsTrue(exception.Contains(Messages.Directory(FakeTypes.ReferenceTypes.ClassTypes.String_New(), FIELD_NAME)));
@@ -528,7 +499,6 @@ namespace Kitpymes.Core.Validations.Tests
             Assert.IsTrue(exception.Contains(Messages.FileExtension(FakeTypes.ReferenceTypes.ClassTypes.String_New(), FIELD_NAME)));
             Assert.IsTrue(exception.Contains(Messages.File(FakeTypes.ReferenceTypes.ClassTypes.String_New(), FIELD_NAME)));
             Assert.IsTrue(exception.Contains(Messages.Name(FakeTypes.ReferenceTypes.ClassTypes.String_New(), FIELD_NAME)));
-            Assert.IsTrue(exception.Contains(Messages.Password(min, FIELD_NAME)));
             Assert.IsTrue(exception.Contains(Messages.Subdomain(FakeTypes.ReferenceTypes.ClassTypes.String_New(), FIELD_NAME)));
 
             Assert.IsTrue(exception.Contains(MESSAGE));

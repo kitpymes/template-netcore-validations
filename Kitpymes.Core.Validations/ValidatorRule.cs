@@ -80,13 +80,13 @@ namespace Kitpymes.Core.Validations
         {
             if (!IsValid)
             {
-                var messages = _stopFirstError
+                var errors = _stopFirstError
                      ? new string[] { _rules.First().Invoke() }
                      : _rules.Select(rule => rule.Invoke()).ToArray();
 
                 _rules.Clear();
 
-                throw new ValidationsException(messages);
+                throw new ValidationsException(errors);
             }
         }
 

@@ -13,7 +13,7 @@ namespace Kitpymes.Core.Validations.FluentValidation.Tests
         public const long MAX = long.MaxValue;
         public const long MIN = long.MinValue;
 
-        public Guid Id { get; set; }
+        public Guid? Id { get; set; }
         public string? Name { get; set; }
         public string? Password { get; set; }
         public string? ConfirmPassword { get; set; }

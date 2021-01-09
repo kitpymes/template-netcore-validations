@@ -257,7 +257,7 @@ namespace Kitpymes.Core.Validations.FluentValidation
         public static IRuleBuilder<T, string?> IsRegex<T>(this IRuleBuilder<T, string?> ruleBuilder, string regex, string? overrideFieldName = null)
         => ruleBuilder.Custom((value, context) =>
         {
-            if (Shared.Util.Check.IsRegex(regex, value).HasErrors)
+            if (Shared.Util.Check.IsRegexMatch(regex, value).HasErrors)
             {
                 context.AddFailure(Messages.Regex(overrideFieldName ?? context.DisplayName));
             }
@@ -274,7 +274,7 @@ namespace Kitpymes.Core.Validations.FluentValidation
         public static IRuleBuilder<T, string?> IsRegexWithMessage<T>(this IRuleBuilder<T, string?> ruleBuilder, string regex, string message)
         => ruleBuilder.Custom((value, context) =>
         {
-            if (Shared.Util.Check.IsRegex(regex, value).HasErrors)
+            if (Shared.Util.Check.IsRegexMatch(regex, value).HasErrors)
             {
                 context.AddFailure(message);
             }
@@ -435,40 +435,6 @@ namespace Kitpymes.Core.Validations.FluentValidation
         => ruleBuilder.Custom((value, context) =>
         {
             if (Shared.Util.Check.IsName(value).HasErrors)
-            {
-                context.AddFailure(message);
-            }
-        });
-
-        /// <summary>
-        /// Comprueba si el valor ingresado es valido.
-        /// </summary>
-        /// <typeparam name="T">Entidad a validar.</typeparam>
-        /// <param name="ruleBuilder">Regla de validación.</param>
-        /// <param name="min">La cantidad mínima de caracteres que puede contener.</param>
-        /// <param name="overrideFieldName">Nombre del campo.</param>
-        /// <returns>IRuleBuilder.</returns>
-        public static IRuleBuilder<T, string?> IsPassword<T>(this IRuleBuilder<T, string?> ruleBuilder, long min, string? overrideFieldName = null)
-        => ruleBuilder.Custom((value, context) =>
-        {
-            if (Shared.Util.Check.IsPassword(min, value).HasErrors)
-            {
-                context.AddFailure(Messages.Password(min, overrideFieldName ?? context.DisplayName));
-            }
-        });
-
-        /// <summary>
-        /// Comprueba si el valor ingresado es valido.
-        /// </summary>
-        /// <typeparam name="T">Entidad a validar.</typeparam>
-        /// <param name="ruleBuilder">Regla de validación.</param>
-        /// <param name="min">La cantidad mínima de caracteres que puede contener.</param>
-        /// <param name="message">Mensaje a mostrar.</param>
-        /// <returns>IRuleBuilder.</returns>
-        public static IRuleBuilder<T, string?> IsPasswordWithMessage<T>(this IRuleBuilder<T, string?> ruleBuilder, long min, string message)
-        => ruleBuilder.Custom((value, context) =>
-        {
-            if (Shared.Util.Check.IsPassword(min, value).HasErrors)
             {
                 context.AddFailure(message);
             }

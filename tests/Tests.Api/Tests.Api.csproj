@@ -9,7 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Tests.Api.Models\Tests.Api.Models.csproj" />
+    <ProjectReference Include="$(SolutionDir)tests\Tests.Api.Models\Tests.Api.Models.csproj" />
   </ItemGroup>
 
 </Project>

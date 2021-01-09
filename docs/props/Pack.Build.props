@@ -5,12 +5,12 @@
   <Choose>
     <When Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
       <PropertyGroup>
-        <Version>1.0.1</Version>
+        <Version>1.0.2</Version>
         <ApplicationIcon>$(SolutionDir)docs\images\logo.ico</ApplicationIcon>
         <PackageId>$(AssemblyName)</PackageId>
-        <Authors>Kitpymes, Sebastian Ferrari</Authors>
+        <Authors>Kitpymes, Sebastian R Ferrari</Authors>
         <Owners>Kitpymes</Owners>
-        <Title>Validations</Title>
+        <Title>Kitpymes.Core.Validations</Title>
         <Copyright>Copyright © $([System.DateTime]::Now.Year) by Kitpymes and Contributors. All rights reserved.</Copyright>
         <Description>Validaciones para multi proveedores.</Description>
         <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>

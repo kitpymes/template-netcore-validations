@@ -24,7 +24,7 @@ namespace Kitpymes.Core.Validations
     public static class ValidationsApplicationBuilderExtensions
     {
         /// <summary>
-        /// Carga el middlware para que capte los errores de las validaciones.
+        /// Carga el middlware para captar los errores.
         /// </summary>
         /// <param name="application">Define una clase que proporciona los mecanismos para configurar la solicitud de una aplicación.</param>
         /// <returns>IApplicationBuilder.</returns>

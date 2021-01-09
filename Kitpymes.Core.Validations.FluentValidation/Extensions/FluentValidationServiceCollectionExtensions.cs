@@ -7,13 +7,11 @@
 
 namespace Kitpymes.Core.Validations.FluentValidation
 {
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
     using System.Linq;
     using System.Reflection;
     using global::FluentValidation.AspNetCore;
     using Kitpymes.Core.Shared;
+    using Kitpymes.Core.Validations.Abstractions;
     using Microsoft.Extensions.DependencyInjection;
 
     /*
@@ -38,7 +36,7 @@ namespace Kitpymes.Core.Validations.FluentValidation
         /// <returns>La interface IServiceCollection.</returns>
         public static IServiceCollection LoadFluentValidation(this IServiceCollection services, FluentValidationSettings settings)
         {
-            if (settings != null && settings.Enabled.HasValue && settings.Enabled.Value && settings.Assemblies != null && settings.Assemblies.Any())
+            if (settings?.Enabled == true && settings.Assemblies != null && settings.Assemblies.Any())
             {
                 var assemblies = settings.Assemblies.ToAssembly();
 
@@ -52,7 +50,19 @@ namespace Kitpymes.Core.Validations.FluentValidation
         {
             var mvcBuilder = services.BuildServiceProvider().GetService<IMvcBuilder>() ?? services.AddMvc();
 
-            mvcBuilder?.AddFluentValidation(x => x.RegisterValidatorsFromAssemblies(assemblies));
+            mvcBuilder.ConfigureApiBehaviorOptions(x =>
+            {
+                x.InvalidModelStateResponseFactory = context =>
+                {
+                    var errors = context.ModelState
+                        .Where(e => e.Value.Errors.Any())
+                        .ToDictionary(
+                            key => key.Key,
+                            value => value.Value.Errors.Select(e => e.ErrorMessage));
+
+                    throw new ValidationsException(errors);
+                };
+            }).AddFluentValidation(x => x.RegisterValidatorsFromAssemblies(assemblies));
 
             return services;
         }

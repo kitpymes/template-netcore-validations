@@ -61,6 +61,6 @@ namespace Kitpymes.Core.Validations
             return this;
         }
 
-        private bool IsRegexHasErrors(string regex) => !(_value is string) || Shared.Util.Check.IsRegex(regex, _value.ToString()).HasErrors;
+        private bool IsRegexHasErrors(string regex) => !(_value is string) || Shared.Util.Check.IsRegexMatch(regex, _value.ToString()).HasErrors;
     }
 }
