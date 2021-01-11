@@ -18,7 +18,7 @@ namespace Kitpymes.Core.Validations
     using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
-    using Newtonsoft.Json;
+    using UTIL = Kitpymes.Core.Shared.Util;
 
     /*
         Clase del middlware ValidationsMiddleware
@@ -95,11 +95,7 @@ namespace Kitpymes.Core.Validations
 
             var details = httpContext.ToDetails(RequestBody);
 
-            dynamic result = new System.Dynamic.ExpandoObject();
-
-            result.Success = false;
-
-            result.Title = Resources.MsgErrorsTitle;
+            UTIL.IResult? result = null;
 
             var exceptionTypeName = exception.GetType().Name;
 
@@ -109,70 +105,81 @@ namespace Kitpymes.Core.Validations
             {
                 case ValidationsException validationException when exception is ValidationsException:
 
-                    statusCode = result.StatusCode = HttpStatusCode.BadRequest;
+                    statusCode = HttpStatusCode.BadRequest;
 
-                    if (validationException.HasErrors)
+                    result = UTIL.Result.Error(options =>
                     {
-                        result.Errors = validationException.Errors;
-                    }
-                    else
-                    {
-                        result.Message = validationException.Message;
-                    }
+                        options.WithTitle(Resources.MsgErrorsTitle)
+                            .WithStatusCode(statusCode)
+                            .WithMessages(validationException.Message)
+                            .WithErrors(validationException.Errors);
 
-                    if (environment.IsDevelopment())
-                    {
-                        result.Exception = exceptionTypeName;
-
-                        result.Details = details;
-                    }
+                        if (environment.IsDevelopment())
+                        {
+                            options
+                                .WithExceptionType(exceptionTypeName)
+                                .WithDetails(details);
+                        }
+                    });
 
                     break;
 
                 case UnauthorizedAccessException unauthorizedAccessException when exception is UnauthorizedAccessException:
 
-                    statusCode = result.StatusCode = HttpStatusCode.Unauthorized;
+                    statusCode = HttpStatusCode.Unauthorized;
 
-                    if (environment.IsDevelopment())
+                    result = UTIL.Result.Error(options =>
                     {
-                        result.Message = unauthorizedAccessException.ToFullMessage();
+                        options
+                            .WithTitle(Resources.MsgErrorsTitle)
+                            .WithStatusCode(statusCode);
 
-                        result.Exception = exceptionTypeName;
-
-                        result.Details = details;
-                    }
-                    else
-                    {
-                        result.Message = Resources.MsgUnauthorizedAccess;
-                    }
+                        if (environment.IsDevelopment())
+                        {
+                            options
+                                .WithMessages(unauthorizedAccessException.ToFullMessage())
+                                .WithExceptionType(exceptionTypeName)
+                                .WithDetails(details);
+                        }
+                        else
+                        {
+                            options.WithMessages(Resources.MsgUnauthorizedAccess);
+                        }
+                    });
 
                     break;
 
                 default:
 
-                    statusCode = result.StatusCode = HttpStatusCode.InternalServerError;
+                    statusCode = HttpStatusCode.InternalServerError;
 
-                    if (environment.IsDevelopment())
+                    result = UTIL.Result.Error(options =>
                     {
-                        result.Message = exception.ToFullMessage();
+                        options
+                            .WithTitle(Resources.MsgErrorsTitle)
+                            .WithStatusCode(statusCode);
 
-                        result.Exception = exceptionTypeName;
+                        if (environment.IsDevelopment())
+                        {
+                            options
+                                .WithMessages(exception.ToFullMessage())
+                                .WithExceptionType(exceptionTypeName)
+                                .WithDetails(details);
+                        }
+                        else
+                        {
+                            Logger.LogError(exception, details);
 
-                        result.Details = details;
-                    }
-                    else
-                    {
-                        Logger.LogError(exception, details);
-
-                        result.Message = Resources.MsgFriendlyUnexpectedError;
-                    }
+                            options.WithMessages(Resources.MsgFriendlyUnexpectedError);
+                        }
+                    });
 
                     break;
             }
 
             await httpContext.Response.ToResultAsync(
                 status: statusCode,
-                message: JsonConvert.SerializeObject(result as object),
+                message: Newtonsoft.Json.JsonConvert.SerializeObject(result),
                 headers: (nameof(Exception), new string[] { exceptionTypeName })).ConfigureAwait(false);
         }
     }

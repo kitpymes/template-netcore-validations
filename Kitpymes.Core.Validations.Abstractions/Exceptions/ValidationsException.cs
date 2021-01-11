@@ -34,7 +34,7 @@ namespace Kitpymes.Core.Validations.Abstractions
         /// </summary>
         /// <param name="messages">Mensajes de errores.</param>
         public ValidationsException(params string[] messages)
-        => Messages = messages;
+            : this(string.Join(", ", messages)) { }
 
         /// <summary>
         /// Inicializa una nueva instancia de la clase <see cref="ValidationsException"/>.
@@ -67,11 +67,6 @@ namespace Kitpymes.Core.Validations.Abstractions
             : base(message) { }
 
         /// <summary>
-        /// Obtiene los mensajes.
-        /// </summary>
-        public IList<string>? Messages { get; }
-
-        /// <summary>
         /// Obtiene los errores.
         /// </summary>
         public IDictionary<string, IEnumerable<string>>? Errors { get; }
@@ -89,7 +84,7 @@ namespace Kitpymes.Core.Validations.Abstractions
         /// Si encontro o no el mensaje.
         /// </returns>
         public bool Contains(string message)
-        => Messages != null && Messages.Contains(message);
+        => Message != null && Message.Contains(message);
 
         /// <summary>
         /// Verifica si el mensaje <paramref name="message"/> esta contenido en la excepción/>.

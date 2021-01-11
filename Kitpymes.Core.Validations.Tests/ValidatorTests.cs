@@ -17,6 +17,10 @@ namespace Kitpymes.Core.Validations.Tests
         [TestMethod]
         public void IsNullOrAny_AddRules_Passing_InvalidArguments_Returns_Errors()
         {
+            var culture = System.Globalization.CultureInfo.GetCultureInfo("es");
+            System.Threading.Thread.CurrentThread.CurrentCulture = culture;
+            System.Threading.Thread.CurrentThread.CurrentUICulture = culture;
+
             var result = Validator
                 .AddRule(FakeTypes.ColecctionsTypes.List_Null, x => x.IsNullOrAny())
                 .AddRule(FakeTypes.ReferenceTypes.MatrizTypes.Array_Default, x => x.IsNullOrAny(FIELD_NAME))
