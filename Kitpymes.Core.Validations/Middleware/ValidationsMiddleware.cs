@@ -8,7 +8,9 @@
 namespace Kitpymes.Core.Validations
 {
     using System;
+    using System.Collections.Generic;
     using System.Globalization;
+    using System.Linq;
     using System.Net;
     using System.Text;
     using System.Threading.Tasks;
@@ -93,7 +95,14 @@ namespace Kitpymes.Core.Validations
         {
             var environment = httpContext.RequestServices.ToEnvironment();
 
-            var details = httpContext.ToDetails(RequestBody);
+            var optionalData = new Dictionary<string, IEnumerable<string>>();
+
+            if (!string.IsNullOrWhiteSpace(RequestBody))
+            {
+                optionalData.AddOrUpdate(nameof(RequestBody), RequestBody);
+            }
+
+            var details = httpContext.ToDetails(optionalData);
 
             UTIL.IResult? result = null;
 
@@ -180,7 +189,10 @@ namespace Kitpymes.Core.Validations
             await httpContext.Response.ToResultAsync(
                 status: statusCode,
                 message: Newtonsoft.Json.JsonConvert.SerializeObject(result),
-                headers: (nameof(Exception), new string[] { exceptionTypeName })).ConfigureAwait(false);
+                headers: new Dictionary<string, IEnumerable<string>>
+                {
+                    { nameof(Exception), new List<string> { exceptionTypeName } },
+                }).ConfigureAwait(false);
         }
     }
 }

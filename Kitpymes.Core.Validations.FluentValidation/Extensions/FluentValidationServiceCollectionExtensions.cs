@@ -7,6 +7,8 @@
 
 namespace Kitpymes.Core.Validations.FluentValidation
 {
+    using System.Collections;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
     using global::FluentValidation.AspNetCore;
@@ -38,14 +40,18 @@ namespace Kitpymes.Core.Validations.FluentValidation
         {
             if (settings?.Enabled == true && settings.Assemblies != null && settings.Assemblies.Any())
             {
-                var assemblies = settings.Assemblies.ToAssembly();
-
-                services.LoadFluentValidation(assemblies.ToArray());
+                services.LoadFluentValidation(settings.Assemblies.ToArray());
             }
 
             return services;
         }
 
+        /// <summary>
+        /// Carga el servicio de validaciones.
+        /// </summary>
+        /// <param name="services">Colección de servicios.</param>
+        /// <param name="assemblies">Ensamblados donde se aplica FluentValidation.</param>
+        /// <returns>La interface IServiceCollection.</returns>
         private static IServiceCollection LoadFluentValidation(this IServiceCollection services, params Assembly[] assemblies)
         {
             var mvcBuilder = services.BuildServiceProvider().GetService<IMvcBuilder>() ?? services.AddMvc();

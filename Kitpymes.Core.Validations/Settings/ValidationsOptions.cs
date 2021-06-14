@@ -8,6 +8,7 @@
 namespace Kitpymes.Core.Validations
 {
     using System.Linq;
+    using System.Reflection;
 
     /*
         Configuración de las validaciones ValidationsOptions
@@ -31,15 +32,15 @@ namespace Kitpymes.Core.Validations
         /// <summary>
         /// Habilita el proveedor de validaciones FluentValidation.
         /// </summary>
-        /// <param name="assembliesNames">Nombre de los assemblies.</param>
+        /// <param name="assemblies">Ensamblados donde se aplican las validaciones.</param>
         /// <returns>La clase ValidationsOptions.</returns>
-        public ValidationsOptions UseFluentValidator(params string[] assembliesNames)
+        public ValidationsOptions UseFluentValidator(params Assembly[] assemblies)
         {
-            if (assembliesNames != null && assembliesNames.Any())
+            if (assemblies != null && assemblies.Any())
             {
                 ValidationsSettings.FluentValidationSettings.Enabled = true;
 
-                ValidationsSettings.FluentValidationSettings?.Assemblies?.AddRange(assembliesNames);
+                ValidationsSettings.FluentValidationSettings?.Assemblies.AddRange(assemblies);
             }
 
             return this;

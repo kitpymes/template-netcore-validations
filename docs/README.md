@@ -193,33 +193,12 @@ public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 
 ```
 
-**Opción 1: configuración desde el appsetings**
-
-```js
-{
-    "ValidationsSettings": {
-        "Enabled": true, // Default: false
-        "FluentValidationSettings": {
-            "Enabled": true, // Default: false
-            "Assemblies": [ "Api.Models" ] // Default: null
-        }
-    }
-}
-```
+**Configuración**
 
 ```cs
 public void ConfigureServices(IServiceCollection services)
 {
-    services.LoadValidations(Configuration);
-}
-```
-
-**Opción 2: configuración manual, agregamos los assemblies en formato string**
-
-```cs
-public void ConfigureServices(IServiceCollection services)
-{
-    services.LoadValidations(validator => validator.UseFluentValidator("Api.Models"));
+    services.LoadValidations(validator => validator.UseFluentValidator(Assembly.GetExecutingAssembly()));
 }
 ```
 

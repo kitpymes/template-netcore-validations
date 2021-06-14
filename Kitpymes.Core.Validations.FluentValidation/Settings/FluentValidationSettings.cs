@@ -8,6 +8,7 @@
 namespace Kitpymes.Core.Validations.FluentValidation
 {
     using System.Collections.Generic;
+    using System.Reflection;
 
     /*
         Configuración de las validaciones FluentValidationSettings
@@ -29,7 +30,6 @@ namespace Kitpymes.Core.Validations.FluentValidation
         public const bool DefaultEnabled = false;
 
         private bool _enabled = DefaultEnabled;
-        private List<string> assemblies = new List<string>();
 
         /// <summary>
         /// Obtiene o establece un valor que indica el servicio esta habilitado.
@@ -48,18 +48,8 @@ namespace Kitpymes.Core.Validations.FluentValidation
         }
 
         /// <summary>
-        /// Obtiene los nombres de los assemblies.
+        /// Obtiene o establece los assemblies donde se ejecutaran las validaciones.
         /// </summary>
-        public List<string>? Assemblies
-        {
-            get => this.assemblies;
-            internal set
-            {
-                if (value?.Count > 0)
-                {
-                    this.assemblies = value;
-                }
-            }
-        }
+        public List<Assembly> Assemblies { get; set; } = new List<Assembly>();
     }
 }
