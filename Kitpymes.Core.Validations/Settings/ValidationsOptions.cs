@@ -30,17 +30,32 @@ namespace Kitpymes.Core.Validations
         public ValidationsSettings ValidationsSettings { get; private set; } = new ValidationsSettings();
 
         /// <summary>
+        /// Si se habilita el servicio de validaciones.
+        /// </summary>
+        /// <param name="enabled">Si se habilita o no.</param>
+        /// <returns>La clase ValidationsOptions.</returns>
+        public ValidationsOptions WithEnabled(bool enabled = true)
+        {
+            ValidationsSettings.Enabled = enabled;
+
+            return this;
+        }
+
+        /// <summary>
         /// Habilita el proveedor de validaciones FluentValidation.
         /// </summary>
         /// <param name="assemblies">Ensamblados donde se aplican las validaciones.</param>
         /// <returns>La clase ValidationsOptions.</returns>
-        public ValidationsOptions UseFluentValidator(params Assembly[] assemblies)
+        public ValidationsOptions WithFluentValidation(params string[] assemblies)
         {
             if (assemblies != null && assemblies.Any())
             {
-                ValidationsSettings.FluentValidationSettings.Enabled = true;
+                ValidationsSettings.FluentValidationSettings = new FluentValidation.FluentValidationSettings
+                {
+                    Enabled = true,
+                };
 
-                ValidationsSettings.FluentValidationSettings?.Assemblies.AddRange(assemblies);
+                ValidationsSettings.FluentValidationSettings.Assemblies?.AddRange(assemblies);
             }
 
             return this;

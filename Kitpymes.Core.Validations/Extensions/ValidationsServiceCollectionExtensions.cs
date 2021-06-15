@@ -35,17 +35,11 @@ namespace Kitpymes.Core.Validations
         /// <returns>IServiceCollection.</returns>
         public static IServiceCollection LoadValidations(this IServiceCollection services, IConfiguration configuration)
         {
-            services.ToIsNullOrEmptyThrow(nameof(services));
+            var settings = configuration?.GetSection(nameof(ValidationsSettings))?.Get<ValidationsSettings>();
 
-            var settings = configuration?.GetSection(nameof(ValidationsSettings))?.Get<ValidationsSettings>()
-                .ToIsNullOrEmptyThrow(nameof(ValidationsSettings));
+            var config = settings.ToIsNullOrEmptyThrow(nameof(settings));
 
-            if (settings?.Enabled == true)
-            {
-                services.LoadValidations(settings);
-            }
-
-            return services;
+            return services.LoadValidations(config);
         }
 
         /// <summary>
@@ -55,18 +49,7 @@ namespace Kitpymes.Core.Validations
         /// <param name="options">Configuración de las validaciones.</param>
         /// <returns>IServiceCollection.</returns>
         public static IServiceCollection LoadValidations(this IServiceCollection services, Action<ValidationsOptions> options)
-         {
-            services.ToIsNullOrEmptyThrow(nameof(services));
-
-            var settings = options.ToConfigureOrDefault().ValidationsSettings;
-
-            if (settings?.Enabled == true)
-            {
-                services.LoadValidations(settings);
-            }
-
-            return services;
-         }
+        => services.LoadValidations(options.ToConfigureOrDefault().ValidationsSettings);
 
         /// <summary>
         /// Carga el servicio de validaciones.
@@ -76,11 +59,12 @@ namespace Kitpymes.Core.Validations
         /// <returns>IServiceCollection.</returns>
         public static IServiceCollection LoadValidations(this IServiceCollection services, ValidationsSettings settings)
         {
-            services.ToIsNullOrEmptyThrow(nameof(services));
-
-            if (settings?.FluentValidationSettings.Enabled == true)
+            if (settings?.Enabled == true)
             {
-                services.LoadFluentValidation(settings.FluentValidationSettings);
+                if (settings.FluentValidationSettings?.Enabled == true)
+                {
+                    services.LoadFluentValidation(settings.FluentValidationSettings);
+                }
             }
 
             return services;

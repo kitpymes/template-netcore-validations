@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Kitpymes.Core.Validations.FluentValidation.Tests
 {
     [TestClass]
-    public class FluentValidatorTests
+    public class FluentValidationTests
     {
         [TestMethod]
         public void IsNullOrAny_PassingInvalidArgumentsReturnErrors()

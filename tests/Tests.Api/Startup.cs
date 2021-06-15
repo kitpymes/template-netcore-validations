@@ -3,8 +3,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using System.Reflection;
 
 namespace Tests.Api
 {
@@ -21,8 +19,11 @@ namespace Tests.Api
         {
             services.AddMvc();
 
-            /*** Configuración para FluentValidator. ***/
-            services.LoadValidations(validator => validator.UseFluentValidator(Assembly.GetExecutingAssembly()));
+            /*** Configuración desde el AppSettings para FluentValidator. ***/
+            services.LoadValidations(Configuration);
+
+            /*** Configuración manual para FluentValidator. ***/
+            // services.LoadValidations(validator => validator.WithEnabled().WithFluentValidation("App.Models"));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

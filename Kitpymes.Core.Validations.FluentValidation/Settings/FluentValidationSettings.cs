@@ -8,7 +8,6 @@
 namespace Kitpymes.Core.Validations.FluentValidation
 {
     using System.Collections.Generic;
-    using System.Reflection;
 
     /*
         Configuración de las validaciones FluentValidationSettings
@@ -50,6 +49,6 @@ namespace Kitpymes.Core.Validations.FluentValidation
         /// <summary>
         /// Obtiene o establece los assemblies donde se ejecutaran las validaciones.
         /// </summary>
-        public List<Assembly> Assemblies { get; set; } = new List<Assembly>();
+        public List<string>? Assemblies { get; set; }
     }
 }

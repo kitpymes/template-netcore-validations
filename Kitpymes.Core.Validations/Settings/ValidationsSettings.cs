@@ -49,6 +49,6 @@ namespace Kitpymes.Core.Validations
         /// <summary>
         /// Obtiene o establece la configuración de FluentValidation.
         /// </summary>
-        public FluentValidationSettings FluentValidationSettings { get; set; } = new FluentValidationSettings();
+        public FluentValidationSettings? FluentValidationSettings { get; set; }
     }
 }
