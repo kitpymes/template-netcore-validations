@@ -166,7 +166,7 @@ namespace Kitpymes.Core.Validations.Tests
 
             httpContext.Request.Path = new PathString(details?.path);
 
-            httpContext.Request.Host = new HostString(details?.host);
+            httpContext.Request.Host = new HostString(details?.host!);
 
             var middleware = new ValidationsMiddleware((HttpContext context) => throw exception, new LoggerFactory());
 

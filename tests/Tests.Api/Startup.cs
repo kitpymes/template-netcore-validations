@@ -23,7 +23,7 @@ namespace Tests.Api
             services.LoadValidations(Configuration);
 
             /*** Configuración manual para FluentValidator. ***/
-            // services.LoadValidations(validator => validator.WithEnabled().WithFluentValidation("App.Models"));
+            //services.LoadValidations(validator => validator.WithEnabled().WithFluentValidation("Tests.Api.Models"));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

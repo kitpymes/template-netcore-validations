@@ -11,7 +11,6 @@ namespace Kitpymes.Core.Validations.Abstractions
     using System.Collections.Generic;
     using System.Linq;
     using System.Runtime.Serialization;
-    using System.Security.Permissions;
 
     /*
         Clase de excepción ValidationsException
@@ -48,7 +47,6 @@ namespace Kitpymes.Core.Validations.Abstractions
         /// </summary>
         /// <param name="info">Almacena todos los datos necesarios para serializar o deserializar un objeto.</param>
         /// <param name="context">Describe el origen y el destino de una secuencia serializada dada y proporciona un contexto adicional definido por el llamador.</param>
-        [SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
         protected ValidationsException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         { }

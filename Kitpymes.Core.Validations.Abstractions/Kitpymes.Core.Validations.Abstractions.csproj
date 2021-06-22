@@ -4,7 +4,7 @@
   <Import Project="$(SolutionDir)docs/props/Pack.Build.props" Condition="Exists('$(SolutionDir)docs/props/Pack.Build.props')" />
   
   <ItemGroup>
-    <PackageReference Include="Kitpymes.Core.Shared" Version="1.1.9" />
+    <PackageReference Include="Kitpymes.Core.Shared" Version="1.2.2" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
   </ItemGroup>
 
@@ -24,6 +24,9 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <CustomToolNamespace></CustomToolNamespace>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Update="Microsoft.VisualStudio.Threading.Analyzers" Version="16.10.56" />
   </ItemGroup>
 
 </Project>

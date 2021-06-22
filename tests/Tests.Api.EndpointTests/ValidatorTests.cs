@@ -25,9 +25,9 @@ namespace Tests.Api.EndpointsTests
                 .ConfigureWebHost(webHost => webHost
                     .ConfigureAppConfiguration(configHost =>
                     {
-                        configHost.SetBasePath(Directory.GetCurrentDirectory());
-                        configHost.AddJsonFile("appsettings.json", optional: true);
-                        configHost.AddEnvironmentVariables(prefix: "PREFIX_");
+                        configHost.SetBasePath(Directory.GetCurrentDirectory())
+                            .AddJsonFile($"appsettings.Development.json", optional: true, reloadOnChange: true)
+                            .AddEnvironmentVariables();
                     })
                     .UseTestServer()
                     .UseStartup<Startup>())
@@ -71,7 +71,7 @@ namespace Tests.Api.EndpointsTests
             Assert.IsNotNull(exception);
             Assert.IsTrue(exception.HasErrors);
 
-            Log(exception.Errors.ToSerialize());
+            Log(exception.Message);
         }
 
         [TestMethod]
@@ -88,7 +88,7 @@ namespace Tests.Api.EndpointsTests
             Assert.IsNotNull(exception);
             Assert.IsTrue(exception.HasErrors);
 
-            Log(exception.Errors.ToSerialize());
+            Log(exception.Message);
         }
 
         private void Log(string message) => Console.WriteLine(message);

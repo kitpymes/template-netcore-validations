@@ -10,7 +10,6 @@ namespace Kitpymes.Core.Validations
     using System;
     using System.Collections.Generic;
     using System.Globalization;
-    using System.Linq;
     using System.Net;
     using System.Text;
     using System.Threading.Tasks;
@@ -66,9 +65,9 @@ namespace Kitpymes.Core.Validations
                 if (httpContext != null)
                 {
                     await ReadRequestBodyAsync(httpContext).ConfigureAwait(false);
-                }
 
-                await RequestDelegate(httpContext).ConfigureAwait(false);
+                    await RequestDelegate(httpContext).ConfigureAwait(false);
+                }
             }
             catch (Exception exception)
             {
