@@ -10,6 +10,7 @@
   
   <ItemGroup>
     <PackageReference Include="Kitpymes.Core.Shared" Version="1.2.2" />
+    <PackageReference Include="Kitpymes.Core.Logger" Version="1.1.0" />
   </ItemGroup>
 
   <ItemGroup>

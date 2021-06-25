@@ -168,7 +168,7 @@ namespace Kitpymes.Core.Validations.Tests
 
             httpContext.Request.Host = new HostString(details?.host!);
 
-            var middleware = new ValidationsMiddleware((HttpContext context) => throw exception, new LoggerFactory());
+            var middleware = new ValidationsMiddleware((HttpContext context) => throw exception);
 
             await middleware.InvokeAsync(httpContext).ConfigureAwait(false);
 

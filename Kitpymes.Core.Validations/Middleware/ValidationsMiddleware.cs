@@ -9,16 +9,16 @@ namespace Kitpymes.Core.Validations
 {
     using System;
     using System.Collections.Generic;
-    using System.Globalization;
+    using System.IO;
     using System.Net;
-    using System.Text;
     using System.Threading.Tasks;
+    using Kitpymes.Core.Logger.Abstractions;
     using Kitpymes.Core.Shared;
     using Kitpymes.Core.Validations.Abstractions;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
+    using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
-    using Microsoft.Extensions.Logging;
     using UTIL = Kitpymes.Core.Shared.Util;
 
     /*
@@ -39,17 +39,14 @@ namespace Kitpymes.Core.Validations
         /// Inicializa una nueva instancia de la clase <see cref="ValidationsMiddleware"/>.
         /// </summary>
         /// <param name="requestDelegate">Una función que puede procesar una solicitud HTTP.</param>
-        /// <param name="loggerFactory">Representa un tipo utilizado para configurar el registro de errores.</param>
-        public ValidationsMiddleware(RequestDelegate requestDelegate, ILoggerFactory loggerFactory)
+        public ValidationsMiddleware(RequestDelegate requestDelegate)
         {
             RequestDelegate = requestDelegate;
-
-            Logger = loggerFactory.CreateLogger<ValidationsMiddleware>();
         }
 
         private RequestDelegate RequestDelegate { get; }
 
-        private ILogger<ValidationsMiddleware> Logger { get; }
+        private ILogger? Logger { get; set; }
 
         private string? RequestBody { get; set; }
 
@@ -64,6 +61,8 @@ namespace Kitpymes.Core.Validations
             {
                 if (httpContext != null)
                 {
+                    Logger = httpContext.RequestServices.GetService<ILoggerService>()?.CreateLogger<ValidationsMiddleware>();
+
                     await ReadRequestBodyAsync(httpContext).ConfigureAwait(false);
 
                     await RequestDelegate(httpContext).ConfigureAwait(false);
@@ -77,17 +76,13 @@ namespace Kitpymes.Core.Validations
 
         private async Task ReadRequestBodyAsync(HttpContext httpContext)
         {
-            var request = httpContext.Request;
+            httpContext.Request.EnableBuffering();
 
-            request.EnableBuffering();
+            RequestBody = await new StreamReader(httpContext.Request.Body).ReadToEndAsync();
 
-            var buffer = new byte[Convert.ToInt32(request.ContentLength, CultureInfo.CurrentCulture)];
+            RequestBody = RequestBody.ToRemove("\r", " ").ToRemove("\n", " ");
 
-            await request.Body.ReadAsync(buffer, 0, buffer.Length).ConfigureAwait(false);
-
-            RequestBody = Encoding.UTF8.GetString(buffer).ToRemove("\r\n", " ");
-
-            request.Body.Position = 0;
+            httpContext.Request.Body.Position = 0;
         }
 
         private async Task HandleExceptionAsync(HttpContext httpContext, Exception exception)
@@ -176,7 +171,7 @@ namespace Kitpymes.Core.Validations
                         }
                         else
                         {
-                            Logger.LogError(exception, details);
+                            Logger?.Error(details, exception);
 
                             options.WithMessages(Resources.MsgFriendlyUnexpectedError);
                         }
