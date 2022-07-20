@@ -27,7 +27,7 @@ namespace Kitpymes.Core.Validations
     /// </remarks>
     public class ValidatorRule
     {
-        private static readonly List<Func<string>> _rules = new();
+        private static readonly List<Func<string>> _rules = new ();
 
         private bool _stopFirstError = false;
 
