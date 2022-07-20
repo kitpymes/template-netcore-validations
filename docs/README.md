@@ -79,6 +79,10 @@ public class ValidatorRule
     public void Throw() {}
 
     public async Task ThrowAsync() {}
+
+    public void ThrowApplicationException() {}
+
+    public async Task ThrowApplicationExceptionAsync() {}
 }
 ```
 

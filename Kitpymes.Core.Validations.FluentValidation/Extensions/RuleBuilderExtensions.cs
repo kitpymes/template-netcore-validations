@@ -37,7 +37,7 @@ namespace Kitpymes.Core.Validations.FluentValidation
             where TProperty : IEnumerable?
         => ruleBuilder.Custom((value, context) =>
         {
-            if (!(value is IEnumerable) || Shared.Util.Check.IsNullOrAny(value).HasErrors)
+            if (value is not IEnumerable || Shared.Util.Check.IsNullOrAny(value).HasErrors)
             {
                 context.AddFailure(Messages.NullOrAny(overrideFieldName ?? context.DisplayName));
             }
@@ -55,7 +55,7 @@ namespace Kitpymes.Core.Validations.FluentValidation
            where TProperty : IEnumerable?
            => ruleBuilder.Custom((value, context) =>
            {
-               if (!(value is IEnumerable) || Shared.Util.Check.IsNullOrAny(value).HasErrors)
+               if (value is not IEnumerable || Shared.Util.Check.IsNullOrAny(value).HasErrors)
                {
                    context.AddFailure(message);
                }

@@ -1,7 +1,6 @@
 ﻿using Kitpymes.Core.Validations.Abstractions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -98,9 +97,7 @@ namespace Kitpymes.Core.Validations.Tests
 
             (DefaultHttpContext httpContext, string result) = await InvokeMiddlewareAsync
             (
-                exception,
-
-                environmentName
+                exception, environmentName
             ).ConfigureAwait(false);
 
 

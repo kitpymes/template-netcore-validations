@@ -1,3 +1,6 @@
+# v.1.0.8
+- Se agrega un nuevo lanzador de excepciones de tipo "ApplicationException".
+
 # v.1.0.7
 - Se actualizan validaciones.
 
